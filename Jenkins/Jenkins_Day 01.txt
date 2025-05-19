@@ -119,16 +119,5 @@ Assignment: Create a shell file in your VM which has all the commands that are r
 
 ➤ Freestyle Project 6
 Creating a job using GitHub Repo.
-
-
-
-
-
-
-
-
-
-
-
-
-
+Reference Repo: https://github.com/KastroVKiran/maven-web-app-kastro1.git
+Fork the repository to your GitHub Account and then work.
