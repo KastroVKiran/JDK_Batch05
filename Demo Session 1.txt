@@ -1,0 +1,135 @@
+												Online LIVE Training on 
+										JENKINS 👨‍💼 + DOCKER 🐳 + KUBERNETES ☸️
+														by
+												KASTRO KIRAN V
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Agenda of the Session
+*****************************************
+1️⃣ About me
+	Name: Kastro Kiran V
+	Role: AWS & DevOps Trainer
+			800+ students
+	Experience: 5+ years in Training
+				PaperLive, Star Agile, Think Cloudly,....
+	Educational Background: PhD
+
+2️⃣ Introduction to the training
+	Title: Jenkins + Docker + Kubernetes Online LIVE Training
+			5th Batch
+			Duration: 30 days
+			Sessions: Monday - Friday
+			1.5 hrs
+			45+ hours
+			Timings: 5.00 - 6.30 PM
+			Training Fee: 5000 Rs (One-time payment)
+			Fee payment method: 9700712459 (PhonePe/Google Pay)
+				Send your payment receipt to the above number (WhatsApp - 9700712459)
+				Name, Email, WhatsApp Number
+			
+
+3️⃣ Training Modules & Syllabus Overview
+	⚙️ Jenkins
+		→ Manual deployment of app - Tomcat
+		→ Introduction to CI & CD
+		→ CI & CD tools available & Why to prefer
+		→ Architecture of Jenkins
+		→ Setup Jenkins on Linux & Ubuntu
+		→ Creation of Jenkins jobs (Freestyle, Pipeline, Multi branch pipeline)
+		→ Jenkinsfile
+		→ Jenkins plugins, Configurations, Tool management
+		→ Parameterized jobs, Jenkins shared libraries
+		→ Master & Slave architecture
+		→ RBAC
+		→ SonarQube
+		→ Nexus
+			➤ Major and Mini Projects
+				→ Project 1: Deploying JAVA application
+				→ Project 2: Deploying PYTHON application
+				→ Project 3: Deploying NodeJS application 
+
+	🐳 Docker
+		→ Application architecture
+		→ Containerization
+		→ Docker architecture, Workflow
+		→ Installation of docker in Linux & Ubuntu
+		→ Docker image (Default images, Custom images)
+		→ Dockerfile
+		→ Concept of Port-mapping 
+		→ Working on docker containers
+		→ Docker volumes
+		→ Volume mounting
+		→ Moving files from local to docker container
+		→ Docker networking
+		→ Docker compose
+		→ Docker swarm
+			➤ Major and Mini Projects
+				→ Project 1: Deploying NORMAL JAVA application
+				→ Project 2: Deploying PYTHON application
+				→ Project 3: Deploying SPRING BOOT JAVA application		
+				→ Project 4: Deploying ANGULAR application
+				→ Project 5: Deploying Multi container applications
+				→ Project 6: Deploying Microservices based application
+				→ Project 7: Integrate Jenkins + Docker + Docker Compose
+
+	☸️ Kubernetes
+		→ K8S Introduction
+		→ Orchestration
+		→ K8S Architecture
+		→ Creation of K8S Cluster (AWS Cloud - EKS)
+		→ Creation & Working with PODS
+		→ Methods of creating K8S resources (Imperative & Declarative)
+		→ YAML concept
+		→ K8S Services
+		→ K8S Controllers
+		→ Deployment strategies
+		→ Config Maps & Secrets
+		→ K8S Storage (PV, PVC, AWS EBS CSI)
+		→ Ingress Controllers, Network policies
+		→ Readiness probes, Liveliness probes
+		→ Scheduling & Node management
+		→ RBAC, Security
+		→ HELM
+		→ Monitoring
+		→ Cost optimization
+			➤ Major and Mini Projects
+				→ Deploying BookMyShow App
+				→ Deploying Swiggy App
+				→ Deploying Zomato App
+				→ Blue-Green Deployment
+				→ Creation of EKS Cluster using Jenkins & Terraform
+				→ Deploying Leave Management Application
+
+
+ChatGPT + DeepSeek
+JIRA
+
+Pre-requisite: AWS Cloud (EC2, IAM, S3), Linux Fundamentals, AWS Account (1 year)
+
+
+4️⃣ Course Highlights
+	10+ real-time projects
+	Hands-on practical sessions
+	Life-time access
+		Recorded videos
+		Lecture notes
+	Assignments after/during each module
+	Interview questions
+	Resume preparation guidance
+	Job alerts
+	3+ REAL TIME EXPERIENCE
+	
+5️⃣ Why should you join?
+	→ Real-world use cases and projects
+	→ Deploy the applications from scratch
+
+6️⃣ Training methodology
+	→ 70% Hands-on + 30% Theory
+	→ Weekly revisions & Q&A Sessions
+	→ Live debugging 
+
+
+7️⃣ System requirements
+	→ Laptop
+
+8️⃣ Success stories
+ 

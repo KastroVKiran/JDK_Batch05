@@ -1,0 +1,205 @@
+												Online LIVE Training on 
+										JENKINS 👨‍💼 + DOCKER 🐳 + KUBERNETES ☸️
+														by
+												KASTRO KIRAN V
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Agenda of the Session
+*****************************************
+1️⃣ Introduction to Maven
+2️⃣ Introduction to Tomcat
+3️⃣ Manual Deployment of Java Application
+
+
+Download & Install Java Software:
+------------------------------------------------
+~ In order to download the Java Software, we need to create an account in Oracle Website.
+~ Weblink: https://www.oracle.com/java/technologies/downloads/#jdk21-windows
+	- Download .exe file
+	- Install JAVA
+------------------------------------------------
+Configuration of Java Software:
+------------------------------------------------
+~ After installation of Java Software, we have to set JAVA_HOME in environment variables.
+~ The variables which are used by our PC are called environment variables.
+~ Two types of environment variables: 1. User Variables 2. System Variables
+
+Setting up the JAVA_HOME page for system variables:
+------------------------------------------------------------------------------
+~ C Drive - Program Files - Java - jdk - Copy the jdk folder path - In the search box of PC, type "Environment" and select 'Edit System Environment Varibles' - A dialogue box will open - Advanced - Environment Variables - A dialogue box will open - System Variables - New - A dialogue box will open - Variable Name: JAVA_HOME, Variable Value: <Paste the path of jdk folder> - OK - OK - OK.
+
+Setting up the path for Java:
+------------------------------------------
+~ C Drive - Program Files - Java - jdk - bin - Copy the bin folder path - In the search box of PC, type Environment and select 'Edit System Environment Varibles' - A dialogue box will open - Advanced - Environment Variables - A dialogue box will open - System Variables - Select the "path" - Edit - New - Paste the path - OK - OK - OK.
+
+How to check whether java is working or not:
+----------------------------------------------------------------
+~ Open Command Prompt ----> java -version ----> You should see the Java Version Number/Id
+
+How to download Maven from Apache Website:
+--------------------------------------------------------------------
+~ Google ----> Download apache maven (https://maven.apache.org/download.cgi) ----> "Binary Zip Archive" and click on the link next to it ----> The file gets downloaded in the Zip format ----> Extract the zip file ----> Copy the folder ----> Paste the folder in the C Drive
+
+------------------------------------------------
+Configuration of Maven Software:
+------------------------------------------------
+Setting up the MAVEN_HOME in system environment variables:
+---------------------------------------------------------------------------------------------
+~ C Drive - Paste the extracted zip folder in C Drive - Apache Maven folder - Copy the folder path - In the search box of PC, type Environment and select 'Edit System Environment Varibles' - A dialogue box will open - Advanced - Environment Variables - A dialogue box will open - System Variables - New - Variable Name: MAVEN_HOME, Variable Value: <Paste the path of maven folder> - OK - OK - OK.
+
+Setting up the path for Maven:
+------------------------------------------
+~ C Drive - Apache folder - Bin Folder - Copy the bin folder path - In the search box of PC, type Environment and select 'Edit System Environment Varibles' - A dialogue box will open - Advanced- Environment Variables - A dialogue box will open - System Variables - Select the "path" - Edit - New - Paste the path - OK - OK - OK.
+
+How to check whether Maven is working or not:
+----------------------------------------------------------------
+~ Open Command Prompt ----> mvn -version ----> You should see the Maven Version Number/Id
+
+
+
+--------------
+TOMCAT
+--------------
+Developers --- Writes the source code --- Testing the code --- DevOps Engineers --- Take the code from repo --- Create the infrastructure --- Deploy the code into the servers/VMs
+
+S3 - Static Website Hosting (index.html)
+EC2 - index.html
+
+Deploying the application is the ultimate aim of any devops engineers.
+
+Types of deploying an application
+----------------------------------------------
+2 ways;
+1. Manual deployment
+2. Automated deployment
+
+Manual Deployment --- Deploying the code manually into the servers is known as Manual Deployment
+
+90% of the real-time projects are developed by using JPL.
+If you want to deploy the java code into the servers, we will use different types of servers;
+TOMCAT, JBOSS, NGINX....
+
+Manual Deployment
+---------------------------------
+Java web applications will be deployed in the form of war files
+Java standalone applications will be deployed in the form of jar files
+
+Webserver which is used for manual and also automated deployment is TOMCAT (Java based code)
+
+Process
+-------------------
+AWS --- EC2 --- Linux based instance --- Install tomcat, install java --- Deploy the war file --- Access the web app using Public IP of instance
+
+Apache is the name of the organization. Tomcat is the name of the server
+Apache Tomcat
+Tomcat is an open-source s/w and it is available for FREE of cost
+Tomcat server will run on port number 8080
+You can always change the port number of tomcat
+
+
+1. How to download the tomcat server
+2. Understand tomcat folder structure
+3. Installation of tomcat webserver into the Linux based EC2 Instance
+4. Maven Web Application --- war file --- deployment into the tomcat server in a manual way
+
+Downloading the tomcat server into the local system
+---------------------------------------------------------------------
+https://tomcat.apache.org/download-90.cgi 
+Local system --- click on zip file and extract the zip file to see the tomcat folder structrure
+
+Folder structure of tomcat server
+--------------------------------------------
+1) BIN - Binaries - It consists of the files which are related to the start and stop of tomcat server
+	'.bat' files - are used for windows OS --- If you want to start the tomcat sever: startup.bat, If you want to stop the tomcat sever: shutdown.bat
+	'.sh' files - are used for Linux OS --- If you want to start the tomcat sever: startup.sh, If you want to stop the tomcat sever: shutdown.sh
+
+2) LIB - Libraries - Library folder consists of libraries - jar files
+
+3) CONF - Configuration - It contains configurations files
+	server.xml ----> To configure the tomcat port number
+	tomcat-users.xml ----> To configure the user details
+	context.xml
+
+4) LOGS - It contains the server logs i.e execution details
+
+5) TEMP - Temporary - It contains temporary data
+
+6) WEBAPPS - In this folder we will keep the application war files. It is also called as 'Deployment' folder
+
+Repo URL: https://github.com/KastroVKiran/maven-app-1.git
+
+Working with Tomcat in the Linux ec2 instance
+-----------------------------------------------------------
+~ Launch the Amazon Linux 2 AMI based VM
+~ Connect to the Instance
+~ Install Java Software:
+	To install Java 11 on Amazon Linux:
+	sudo amazon-linux-extras install java-openjdk11
+
+	To install Java 08 on Amazon Linux:
+	sudo yum install java-1.8.0-openjdk
+~ Check the Java Version:
+	java -version
+
+Installation of Tomcat Web Server in Linux based VM
+----------------------------------------------------------------------------
+~ Since the VM is Linux based OS, we will install the "tar" file of Apache Tomcat Web Server
+		https://tomcat.apache.org/download-90.cgi
+~ Keep the cursor on tar.gz file and right click and select 'Copy link address'
+~ To install the Webserver: wget <Paste the tar.gz link> (Tar file of Apache Tomcat will get installed)
+~ Extract the tar file
+	tar -xvf <Name visibile in the red colour in the above link>
+	ls -l (You can see the extracted file in blue color)
+~ cd <Enter the name visible in blue colour in above line>
+	ls -l (To see the folder structure)
+
+Starting the Tomcat Sever
+------------------------------------------
+~ To start the server, we need to access the startup.sh file. This file is available in BIN Folder
+~ cd bin/
+~ To start the sever, 
+	./startup.sh (You can see "Tomcat Started")
+
+Accessing Tomcat Server
+--------------------------------------
+~ Copy the Public IP of EC2 Instance and paste in new tab ---- You will see the error page. This is because, the port no. 8080 is not enabled.
+
+~ Enable Port No. 8080 in SGs of EC2 Instance.
+	Type: Custom TCP, Port: 8080, Source: Anywhere
+
+~ After enabling the port no 8080, go to new tab,
+		<Paste the public IP of instance>:8080/ -----------You can see tomcat server page
+
+Deploy the Web Application in Tomcat Server
+---------------------------------------------------------------
+The war file has to be deployed in the WEBAPPS Folder
+
+Goto 02-Maven-WebApp-CivilEdu -----> Open Command Prompt in that path ----> Lets package the project -----> mvn clean package -----> You can see Build Success ----> You can see the war file in target folder
+
+Since we are accessing the Tomcat in our PC, we can only access the HOME PAGE of TOMCAT. We cannot perform the Admin activities from our PC.
+To perform the admin activities from our PC, we need to edit the "context.xml" and configure "tomcat-user.xml" files.
+
+Editing the context.xml to give the Admin permissions
+------------------------------------------------------------------------------
+File path of context.xml:
+	cd tomcat/webapps/manager/META-INF/context.xml
+
+vi context.xml ----> Edit the allow tag -----> ".*" />
+
+Configuring the Users in Tomcat
+---------------------------------------------
+we need to edit the tomcat-users.xml to configure the users. 
+The "tomcat-users.xml" file is available in "conf" folder
+
+<role rolename="manager-gui" />
+<user username="tomcat" password="tomcat" roles="manager-gui" />
+<role rolename="admin-gui" />  
+<user username="admin" password="admin" roles="manager-gui,admin-gui"/>
+
+Click on 'Server Status' in the Tomcat Browser ----> Enter the username (admin) and password (admin)
+
+Deploying the "war" file of our application
+------------------------------------------------------------
+Scroll down to see "War file to deploy" -----> Click on Choose File ----> Select the war file from our PC ----> Click on "Deploy" 
+You can see our application under "List Applications"
+
+
