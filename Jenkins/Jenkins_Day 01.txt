@@ -1,0 +1,134 @@
+												Online LIVE Training on 
+										JENKINS 👨‍💼 + DOCKER 🐳 + KUBERNETES ☸️
+														by
+												KASTRO KIRAN V
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Agenda of the Session
+*****************************************
+1️⃣ What is CI&CD?
+2️⃣ CI&CD Tools
+3️⃣ Jenkins Introduction
+4️⃣ Setup the Jenkins
+5️⃣ Working with Jenkins
+
+--------------------------------------------------------------------
+1️⃣ What is CI&CD?
+--------------------------------------------------------------------
+Source Code (Dev) → GitHub Repo → Clone the code (DevOps) → Compile & Package the code → Artifacts (jar/war file) → Deploy into the servers → Manual deployment
+
+CI&CD is an automation process to build and deploy the application into the webservers.
+
+CI → Continuous Integration
+		CI = Continuous Test + Continuous Build
+			Hotstar → version 1 → Deploy → Users are accessing the application
+			Hotstar → version 2 → Made the changes → Test the code → Build the code → Deploy
+			Hotstar → version 3 → Made the changes → Test the code → Build the code → Deploy 
+
+CD → Continuous Delivery
+		If you are deploying the code manually into the servers, then it is known as Continuous Delivery 
+
+CD → Continuous Deployment
+		If you are deploying the code automatically into the servers, then it is known as Continuous Delployment
+
+CI & CD = Continuous Integration + Continuous Deployment
+
+--------------------------------------------------------------------
+2️⃣ CI&CD Tools
+--------------------------------------------------------------------
+In order to automate the Build and Deployment process we will use different CI&CD tools.
+Ex: Circle CI, Argo CD, GitHub Actions, GitOps, Jenkins, AWS Code Pipeline
+
+Preferred: Jenkins, GitHub Actions, AWS Code Pipeline
+
+--------------------------------------------------------------------
+3️⃣ Jenkins Introduction
+--------------------------------------------------------------------
+Jenkins is a CI&CD tool
+Using Jenkins we can automate the Build and Deployment process
+If you want to work with Jenkins, we need to install Java (11/17/21)
+Jenkins is developed by using Java Programming Language (JPL)
+Jenkins will run on a default port number which is 8080
+	- To access Jenkins dashboard, we need to open Port Number 8080 in the Security Group of the EC2 instance.
+Official documentation: https://www.jenkins.io/
+
+--------------------------------------------------------------------
+4️⃣ Working with Jenkins
+--------------------------------------------------------------------
+➤ Installation of Jenkins
+
+Step 1: Launch Amazon Linux 2 AMI, t2.micro
+sudo -s   
+sudo yum update
+
+Step 2: Install Git, Java 17 and Maven in server
+yum install git java-17-amazon-corretto maven -y
+  
+Step 3: Jenkins installation
+Official documentation for commands 
+(Jenkins.io ---> download ---> RedHat) show in browser Jenkins.io ---> LTS Redhat (URL: https://www.jenkins.io/doc/book/installing/linux/#red-hat-centos)
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+sudo yum upgrade
+
+yum install jenkins -y
+
+systemctl start jenkins.service
+
+systemctl status jenkins.service  
+You should see "active (running)" in green colour 
+
+NOTE: chkconfig jenkins on
+The above command will make Jenkins service automatically restart itself whenever a server is stopped and restarted
+
+Step 4: Setup Jenkins Dashboard
+Setup Credentials
+Install suggested plugins
+Create admin user
+Access the jenkins dashboard
+
+
+➤ Exploring Jenkins Console
+In Jenkins, we will create JOBS which are known as JENKINS JOBS
+
+➤ Types of Jobs in Jenkins
+	→ Freestyle Project: These jobs are created by using the Jenkins UI
+		→ When we are creating a freestyle project, we have to configure 6 steps
+	→ Pipeline Job: These jobs are created by using Scripts
+
+
+➤ Freestyle Project 1 (to explore the 6 configuration steps)
+	→ Dashboard → New item → Job Name: Project001 → Create → Configure the 6 steps → Apply → Save → Build the job (Success/Fail)
+
+➤ Freestyle Project 2 (with simple shell script) - SUCCESS
+
+➤ Freestyle Project 3 (with simple shell script) - FAILURE
+
+➤ Freestyle Project 4 (with simple shell script but with two files) - SUCCESS
+
+➤ Freestyle Project 5
+Lets say i have a shell file inside my EC2 Instance. This file has to be executed using Jenkins Job
+
+Assignment: Create a custom path with custom directory name. Inside it, create a custom shell file and write some content and execute the custom shell file which is in custom path
+	Ex: /home/ec2-user/jenkins-day01/jenkins01.sh ----> echo "This is my practice"
+
+Assignment: Create a shell file in your VM which has all the commands that are required to install apache/httpd service. Execute the shell file using Jenkins and then access the apache home page in the browser
+
+➤ Freestyle Project 6
+Creating a job using GitHub Repo.
+
+
+
+
+
+
+
+
+
+
+
+
+
