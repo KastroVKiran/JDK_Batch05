@@ -1,0 +1,123 @@
+												Online LIVE Training on 
+										JENKINS 👨‍💼 + DOCKER 🐳 + KUBERNETES ☸️
+														by
+												KASTRO KIRAN V
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Agenda of the Session
+*****************************************
+1️⃣ Understanding "Triggers" Configuration
+	→ Trigger Builds Remotely
+	→ Build after other projects are built
+	→ Build periodically
+	→ GitHub Hook trigger
+	→ Poll SCM
+2️⃣ Understanding "General" Configuration
+	→ Discard old builds
+	→ Parameterized jobs
+	→ Throttle builds
+	→ Concurrent builds
+3️⃣ Configuring Private GitHub Repo in Jenkins
+4️⃣ Recover a Deleted Job
+5️⃣ Email Notification
+
+-------------------------------------------------------------------------
+➤ Installation of Jenkins
+-------------------------------------------------------------------------
+Step 1: Launch Amazon Linux 2 AMI, t2.micro
+sudo -s   
+sudo yum update
+
+Step 2: Install Git, Java 17 and Maven in server
+yum install git java-17-amazon-corretto maven -y
+  
+Step 3: Jenkins installation
+Official documentation for commands 
+(Jenkins.io ---> download ---> RedHat) show in browser Jenkins.io ---> LTS Redhat (URL: https://www.jenkins.io/doc/book/installing/linux/#red-hat-centos)
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+sudo yum upgrade
+
+yum install jenkins -y
+
+systemctl start jenkins.service
+
+systemctl status jenkins.service  
+You should see "active (running)" in green colour 
+
+NOTE: chkconfig jenkins on
+The above command will make Jenkins service automatically restart itself whenever a server is stopped and restarted
+
+Step 4: Setup Jenkins Dashboard
+Setup Credentials
+Install suggested plugins
+Create admin user
+Access the jenkins dashboard
+
+--------------------------------------------------------------------
+1️⃣ Understanding "Triggers" Configuration
+--------------------------------------------------------------------
+➤ Freestyle Project - Poll SCM
+Poll SCM will automatically trigger the job upon identifying the changes in the GitHub repo. Here, i need wait till 1 minute of time
+
+To configure poll SCM we will use CRON syntax
+	* * * * * 	→ Every minute
+	H * * * * → Every one hour
+	H/2 * * * * → Every 30 minutes
+
+https://crontab.guru/
+
+➤ Freestyle Project - GitHub Hook Trigger
+Immediately when there is a change in the GitHub repo, Jenkins will identify the change and will trigger the job immediately in an automated way
+
+➤ Freestyle Project - Build Periodically
+This will trigger the job only at specific time.
+Trigger time: 20 May 2025 @ 6.00 PM
+
+➤ Freestyle Project - Build after other projects are built (Upstream and Downstream Jobs)
+The execution of one job is dependent on its previous job
+
+Project 1 ---- Manually Build
+Project 2 ---- Only after the successful build of Project 1, Project 2 will get triggered
+Project 3 ---- Only after the successful build of Project 2, Project 3 will get triggered 
+Project 4 ---- Only after the successful build of Project 3, Project 4 will get triggered
+
+Dev → Test → SIT → UAT → Pre-Prod → Prod
+
+-------------------------------------------------------------------------
+2️⃣ Understanding "General" Configuration
+-------------------------------------------------------------------------
+➤ Discard old builds
+This option automatically removes old build records to save disk space.
+Prevents disk space exhaustion
+Maintains the Jenkins performance
+
+➤ Throttle Builds
+To restrict the number of jobs to be built in a specific time period we will use Throttle Builds option
+Prevent the system overload
+
+➤ Concurrent builds
+This options allows multiple builds of the same job to run simultaneously when it is enabled 
+
+➤ Parameterized jobs
+Parameters are used to pass variables in key-value pairs during the build
+Types of parameters in Jenkins;
+	1. String Parameter	- Ex: Kastro, Jenkins, GitHub....
+	2. Choice Parameter	- Ex: This or That
+
+
+
+→
+
+
+
+
+
+
+
+
+
+
