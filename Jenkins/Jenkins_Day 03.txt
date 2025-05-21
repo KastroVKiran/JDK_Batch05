@@ -10,11 +10,6 @@ Agenda of the Session
 3️⃣ Storing artifacts in S3 Bucket
 4️⃣ Freestyle Project & Change the Tomcat Port Number
 
-5️⃣ Configure Private GitHub Repo in Jenkins
-6️⃣ Trigger Builds Remotely
-7️⃣ Understanding "Build Executor Status"
-8️⃣ Changing the Jenkins Port Number
-9️⃣  Multi-Branch Pipeline
 
 -------------------------------------------------------------------------
 ➤ Installation of Jenkins
