@@ -85,15 +85,6 @@ For the IAM User created, we need to generate AWS Access and Secret Access Keys
 --------------------------------------------------------------------
 Integrate GitHub + Jenkins + Maven + Java + Tomcat - Freestyle Project
 
-
-➤ 
-
-→
-
-
-
-
-
 GitHub: https://github.com/KastroVKiran/maven-app-1.git
 Tasks:
 ---------------
