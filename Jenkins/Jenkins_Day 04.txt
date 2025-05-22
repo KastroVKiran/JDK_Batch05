@@ -1,0 +1,242 @@
+												Online LIVE Training on 
+										JENKINS 👨‍💼 + DOCKER 🐳 + KUBERNETES ☸️
+														by
+												KASTRO KIRAN V
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Agenda of the Session
+*****************************************
+1️⃣ Configure Private GitHub Repo in Jenkins
+2️⃣ Trigger Builds Remotely
+3️⃣ Changing the Jenkins Port Number
+4️⃣ Understanding "Build Executor Status"
+5️⃣ Multi-Branch Pipeline
+6️⃣ Introduction to Pipeline Concept
+7️⃣ Declarative Vs Scripted
+8️⃣ Understanding "Jenkinsfile"
+9️⃣ Writing a simple Jenkinsfile 
+
+-------------------------------------------------------------------------
+➤ Installation of Jenkins
+-------------------------------------------------------------------------
+Step 1: Launch Amazon Linux 2 AMI, t2.micro
+sudo -s   
+sudo yum update
+
+Step 2: Install Git, Java 17 and Maven in server
+yum install git java-17-amazon-corretto maven -y
+  
+Step 3: Jenkins installation
+Official documentation for commands 
+(Jenkins.io ---> download ---> RedHat) show in browser Jenkins.io ---> LTS Redhat (URL: https://www.jenkins.io/doc/book/installing/linux/#red-hat-centos)
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+sudo yum upgrade
+
+yum install jenkins -y
+
+systemctl start jenkins.service
+
+systemctl status jenkins.service  
+You should see "active (running)" in green colour 
+
+NOTE: chkconfig jenkins on
+The above command will make Jenkins service automatically restart itself whenever a server is stopped and restarted
+
+Step 4: Setup Jenkins Dashboard
+Setup Credentials
+Install suggested plugins
+Create admin user
+Access the jenkins dashboard
+
+--------------------------------------------------------------------
+1️⃣ Configure Private GitHub Repo in Jenkins
+--------------------------------------------------------------------
+In real-time scenarios, once the code is developed by the Developers, we will keep the code in the PRIVATE GitHub Repository.
+To integrate the private GitHub repositories with Jenkins, we have two methods;
+	1. Personal Access Tokens (PAT)**
+	2. SSH Keys (Secure Socket Host / Secure Shell)
+	
+--------------------------------------------------------------------
+2️⃣ Trigger Builds Remotely
+--------------------------------------------------------------------
+Team Lead ----> All the permissions to execute a job ----> Team Members ----> Will not have all kinds of privileges to build and deploy the job ----> Team Lead is on leave ----> Dont have an access to Jenkins dashboard ----> Client is pushing us to deploy the app
+
+
+JENKINS_URL/job/remote-trigger-demo/build?token=TOKEN_NAME
+
+
+http://13.203.200.24:8080/job/remote-trigger-demo/build?token=123456
+123456
+
+--------------------------------------------------------------------
+3️⃣ Changing the Jenkins Port Number
+--------------------------------------------------------------------
+cd /usr/lib/systemd/system ----> sudo vi jenkins.service -----> Scroll down to ENVIRONMENT=JENKINS_PORT = 8080 (Change the port number) ----> esc ----> :wq ----> sudo systemctl restart jenkins -----> Open port number for the VM ----> Access Jenkins using new port number
+
+--------------------------------------------------------------------
+4️⃣ Understanding "Build Executor Status"
+--------------------------------------------------------------------
+
+
+--------------------------------------------------------------------
+5️⃣ Multi-Branch Pipeline
+--------------------------------------------------------------------
+For a repository, if we have multiple branches and the requirement is to build and deploy the app available in all the branches of the same repo.
+
+Repo URL: https://github.com/KastroVKiran/Microservice-App-Kastro.git
+
+--------------------------------------------------------------------
+6️⃣ Introduction to Pipeline Concept & 8️⃣ Understanding "Jenkinsfile"
+--------------------------------------------------------------------
+In Jenkins, we have created the jobs using Jenkins UI
+Using Jenkinsfile we can write the script to create a job with all the required configurations.
+Jenkins Pipeline is a single platform where we are going to run the entire code as a pipeline (PaaC)
+Pipeline as a Code
+
+Pipeline ----> Sequential execution of a different stages available in a job
+
+Reach the office by 10.00 AM
+11.00 PM (Bed time) ----> 07.00 AM (Wakeup) ----> 08.30 AM (Regular Activities) ----> 09.00 AM (Reading newspaper and Breakfast) ----> 09.10 AM (Started to office) ----> 10.00 AM (In your cabin)
+
+Deploying the app
+Take the code (Stage 1) ----> Build the code (Stage 2) ----> Deploy the code (Stage 3) ----> Access the app  (Stage 4) 
+Step1: Clone the repo		Step1: mvn clean				Step1: Docker
+Step2					Step2: mvn package			Step2: Docker-Compose
+Step3												Step3: K8S Cluster
+
+PASS
+pipeline
+agent
+stage
+step
+
+Jenkinsfile consists of all the configurations required to build and deploy the application.
+
+-----------------------------------------------------------
+7️⃣ Declarative Vs Scripted
+-----------------------------------------------------------
+Two ways of writing a jenkinsfile;
+1. Declarative
+2. Scripted
+
+Declarative;
+	1. Recent and advanced style of writing a pipeline script
+	2. Predefined structure
+	3. We will have multiple blocks
+	4. It offers a feature to restart from a specific stage of a pipeline
+	5. Easy to read and manage
+	6. Blue ocean plugin is supported
+
+Scripted;
+	1. Groovy language
+	2. Domain Specific Language (DSL)
+	3. Programming - Flexibility
+	4. Hard to read and manage
+	5. Blue ocean plugin is not supported
+	6. It doesn't support code validation
+	7. It doesn't offer a feature to restart from specific stage
+
+
+
+🔹 1. Declarative Pipeline
+Definition:
+A more structured and simplified syntax introduced to make pipeline creation easier and more readable, especially for users new to Jenkins.
+
+Key Characteristics:
+
+Uses pipeline {} block
+
+Has a predefined structure (e.g., stages, steps, environment)
+
+Enforces best practices
+
+Easier to read and maintain
+
+Supports post actions (e.g., always, success, failure)
+
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building...'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing...'
+            }
+        }
+    }
+    post {
+        success {
+            echo 'Pipeline completed successfully'
+        }
+    }
+}
+
+🔹 2. Scripted Pipeline
+Definition:
+A more flexible and powerful syntax written entirely in Groovy. It existed before declarative pipelines.
+
+Key Characteristics:
+
+Uses Groovy script format
+
+More control and customization
+
+Can be complex for beginners
+
+Greater flexibility for advanced logic (loops, conditionals, etc.)
+
+node {
+    stage('Build') {
+        echo 'Building...'
+    }
+    stage('Test') {
+        echo 'Testing...'
+    }
+}
+------------------------------------------------------------------------------------------------------------------------------------
+Feature		Declarative Pipeline				Scripted Pipeline
+------------------------------------------------------------------------------------------------------------------------------------
+Syntax		Simplified and structured			Full Groovy scripting
+Ease of use	Beginner-friendly					Requires Groovy knowledge
+Error-prone	Less error-prone due to structure	More prone to syntax errors
+Flexibility	Limited compared to scripted		Highly flexible
+Maintenance	Easier							Can become hard to maintain
+Best for		Standard CI/CD processes			Complex logic and dynamic flows
+
+-----------------------------------------------------------------
+9️⃣ Writing a simple Jenkinsfile 
+-----------------------------------------------------------------
+Install "Blue Ocean" or "Pipeline Stage View" plugin to see more detailed stage by stage execution
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Stage 1') {
+            steps {
+                echo 'This is Stage 1'
+            }
+        }
+        stage('Stage 2') {
+            steps {
+                echo 'This is Stage 2'
+            }
+        }
+        stage('Stage 3') {
+            steps {
+                echo 'This is Stage 3'
+            }
+        }
+    }
+}
+
+
+
