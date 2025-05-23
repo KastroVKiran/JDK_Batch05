@@ -1,0 +1,179 @@
+												Online LIVE Training on 
+										JENKINS 👨‍💼 + DOCKER 🐳 + KUBERNETES ☸️
+														by
+												KASTRO KIRAN V
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Agenda of the Session
+*****************************************
+1️⃣ Pipeline Project
+2️⃣ SonarQube
+3️⃣ Nexus
+-------------------------------------------------------------------------
+➤ Installation of Jenkins
+-------------------------------------------------------------------------
+Step 1: Launch Amazon Linux 2 AMI, t2.micro
+sudo -s   
+sudo yum update
+
+Step 2: Install Git, Java 17 and Maven in server
+yum install git java-17-amazon-corretto maven -y
+  
+Step 3: Jenkins installation
+Official documentation for commands 
+(Jenkins.io ---> download ---> RedHat) show in browser Jenkins.io ---> LTS Redhat (URL: https://www.jenkins.io/doc/book/installing/linux/#red-hat-centos)
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+sudo yum upgrade
+
+yum install jenkins -y
+
+systemctl start jenkins.service
+
+systemctl status jenkins.service  
+You should see "active (running)" in green colour 
+
+NOTE: chkconfig jenkins on
+The above command will make Jenkins service automatically restart itself whenever a server is stopped and restarted
+
+Step 4: Setup Jenkins Dashboard
+Setup Credentials
+Install suggested plugins
+Create admin user
+Access the jenkins dashboard
+
+--------------------------------------------------------------------
+1️⃣ Pipeline Project
+--------------------------------------------------------------------
+Jenkins + GitHub + Maven + Tomcat ----> Pipeline Concept
+
+Plugins ---- Deploy to Container, Pipeline: Stage View
+Configurations ---- Maven - maven3, JDK - java17
+
+Repo URL: https://github.com/KastroVKiran/Netflix-Pipeline-Project.git
+
+Pipeline Stages ----- 
+Stage 1: Git Clone
+Stage 2: Maven Build & Package --- clean package
+Stage 3: Deploy to Tomcat
+
+
+Pipeline - Stage 1 
+-------------------------
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone the Code') {
+            steps {
+                git 'https://github.com/KastroVKiran/Netflix-Pipeline-Project.git'
+            }
+        }
+    }
+}
+
+
+Pipeline - Stage 1 & Stage 2
+----------------------------------------
+pipeline {
+    agent any
+
+    tools {
+        maven 'maven s/w'
+    }
+
+    stages {
+        stage('Clone the Code') {
+            steps {
+                git 'https://github.com/KastroVKiran/Netflix-Pipeline-Project.git'
+            }
+        }
+        stage('Maven Build') {
+            steps {
+                script {
+                    def mavenHome = tool name: 'maven s/w', type: 'maven'
+                    def mavenCMD = "${mavenHome}/bin/mvn"
+                    // Run Maven build with parallel execution and skip tests if needed
+                    sh "${mavenCMD} clean package -T 1C -DskipTests"
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Cleaning up after build...'
+            cleanWs() // Clean workspace after build
+        }
+    }
+}
+
+Pipeline - Stage 1 & Stage 2 & Stage 3
+--------------------------------------------------
+Note: Before writing stage 3, run the below commands in MobaXTerm
+sudo visudo
+
+Note: #Add the following line at the end of the file, assuming the Jenkins user as 'jenkins'
+jenkins ALL=(ALL) NOPASSWD: /bin/cp
+
+
+pipeline {
+    agent any
+
+    tools {
+        maven 'maven3'
+    }
+
+    stages {
+        stage('Clone the Code') {
+            steps {
+                git 'https://github.com/KastroVKiran/Netflix-Pipeline-Project.git'
+            }
+        }
+        stage('Maven Build') {
+            steps {
+                script {
+                    def mavenHome = tool name: 'maven3', type: 'maven'
+                    def mavenCMD = "${mavenHome}/bin/mvn"
+                    // Run Maven build with parallel execution and skip tests if needed
+                    sh "${mavenCMD} clean package -T 1C -DskipTests"
+                }
+            }
+        }
+        stage('Deploy Stage') {
+            steps {
+                script {
+                    // Ensure target directory exists before copying
+                    sh 'ls -l target'
+                    // Deploy the WAR file to Tomcat
+                    sh 'sudo cp target/NETFLIX-1.2.2.war /home/ec2-user/apache-tomcat-9.0.105/webapps'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Cleaning up after build...'
+            cleanWs() // Clean workspace after build
+        }
+    }
+}
+
+
+---------------------------------------------------------
+2️⃣ SonarQube
+--------------------------------------------------------- 
+Repo URL: https://github.com/KastroVKiran/SonarQube-Project-Kastro.git (Code along with text document for commands and setup)
+Video Link: https://youtu.be/opJAfDOCZuI?si=C58p0r025HM-1n9K
+---------------------------------------------------------
+3️⃣ Nexus
+---------------------------------------------------------
+Repo URL: https://github.com/KastroVKiran/Nexus-by-Kastro.git (For Text Document Setup and Commands)
+Repo URL: https://github.com/KastroVKiran/Nexus-Demo.git (For the application code)
+Video Link: https://youtu.be/opJAfDOCZuI?si=OIq-XZimpK8ap_go
+
+
