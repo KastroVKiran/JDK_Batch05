@@ -1,0 +1,503 @@
+												Online LIVE Training on 
+										JENKINS 👨‍💼 + DOCKER 🐳 + KUBERNETES ☸️
+														by
+												KASTRO KIRAN V
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Agenda of the Session
+*****************************************
+1️⃣ Jenkins - Final Project
+2️⃣ Recovering Jenkins password
+
+
+
+------------------------------------------------------------
+1️⃣ Jenkins - Final Project
+------------------------------------------------------------
+Repo URL: https://github.com/KastroVKiran/Hotstar-App.git
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Jenkins + GitHub + Maven + Nexus + SonarQube + Tomcat + S3
+
+Jenkins ---- CI & CD process
+Git & GitHub ---- Source code of the application
+Maven ---- Building the code (war/jar file)
+Nexus ---- To store the artifacts
+S3 ---- To store the artifacts (Cloud environment - AWS --- S3)
+SonarQube ---- Code quality analysis
+Tomcat ---- Deployment of application
+
+
+
+Jenkins Setup - Amazon Linux 2 AMI, t2.micro
+	Integrate Git & GitHub
+	Integrate Maven
+Tomcat Setup - Amazon Linux 2 AMI, t2.micro
+SonarQube  Setup - Amazon Linux 2 AMI, t2.medium (Billable)
+Nexus Setup - Ubuntu 24.04 AMI, t4.medium
+
+----------------
+Step 1:
+----------------
+Launch 2 Amazon Linux 2 AMI, t2.micro, 10 GB (Instance 1 Name: Jenkins Server, Instance 2 Name: Tomcat Server)
+Launch 1 Amazon Linux 2 AMI, t2.medium, 10 GB (Instance Name: Sonar Server)
+Launch 1 Ubuntu 24.04 AMI, t2.medium, 10 GB (Instance Name: Nexus Server)
+
+----------------
+Step 2:
+----------------
+Connect to Jenkins Server and install Jenkins using below commands; sudo -s ----> sudo yum update -y
+Setup the hostname for each server ----> hostnamectl set-hostname JenkinsServer ----> sudo -i
+ 
+vi jenkins.sh ----> Paste the below commands in the file ---->
+
+#STEP-1: Installing Git and Maven
+yum install git maven -y
+
+#STEP-2: Repo Information (jenkins.io --> download -- > redhat)
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+#STEP-3: Download Java 17 and Jenkins
+sudo yum install java-17-amazon-corretto -y
+yum install jenkins -y
+
+#STEP-4: Start and check the JENKINS Status
+systemctl start jenkins.service
+systemctl status jenkins.service
+
+#STEP-5: Auto-Start Jenkins
+chkconfig jenkins on
+
+----> esc ----> :wq ----> sh jenkins.sh ----> You will see jenkins is running ----> Access jenkins and setup jenkins
+
+----------------
+Step 3:
+----------------
+Connect to Sonar Server and install SonarQube using below commands; sudo -s ----> sudo yum update -y
+Setup the hostname for each server ----> hostnamectl set-hostname SonarServer ----> sudo -i
+
+vi sonar.sh ----> Paste the below commands in the file ---->
+#! /bin/bash
+cd /opt/
+wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.9.6.50800.zip
+unzip sonarqube-8.9.6.50800.zip
+amazon-linux-extras install java-openjdk11 -y
+useradd sonar
+chown sonar:sonar sonarqube-8.9.6.50800 -R
+chmod 777 sonarqube-8.9.6.50800 -R
+su - sonar
+
+
+----> esc ----> :wq ----> sh sonar.sh ----> You will see sonar is running ----> Access sonar and setup sonar
+
+# use the below command manually after installation
+sh /opt/sonarqube-8.9.6.50800/bin/linux-x86-64/sonar.sh start ----> You will see "Sonar Started"
+
+Open Port no. 9000 for the server and setup SonarQube 
+Username: admin
+Password: admin
+
+
+----------------
+Step 4:
+----------------
+Connect to Tomcat Server and install Tomcat using below commands; sudo -s ----> sudo yum update -y
+Setup the hostname for each server ----> hostnamectl set-hostname TomcatServer ----> sudo -i
+
+Install JAVA ----> sudo yum install java-17-amazon-corretto -y ----> yum install maven git -y
+
+TOMCAT WEBSERVER INSTALLATION ON AMAZON LINUX 2 EC2 INSTANCE
+https://tomcat.apache.org/download-90.cgi ----> Downloads ----> Tomcat 9 ----> Copy the link of tar.gz file ----> https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.73/bin/apache-tomcat-9.0.73.tar.gz ----> sudo wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.73/bin/apachetomcat-9.0.73.tar.gz ----> ls -l ----> You will the tomcat file in red colour. This is a tar.gz file and we have to extract the tar.gz file ----> tar -xvf <enter the name of tomcat file in red colour> ----> All the files will get extracted ----> ls -l ----> You will see the list of extracted files ---> cd <enter the name of tomcat file in blue colour>
+
+Lets start the tomcat server:
+Inorder to start the tomcat server, we need a file called "startup.sh"
+This "startup.sh" file will be there in "bin" folder ----> cd bin ----> ls -l ----> you will see startup.sh file ----> ./startup.sh ----> You will see "Tomcat Started"
+Lets access the tomcat server:
+Here we can access only the Home page of Tomcat.
+
+Inorder to access complete tomcat server, we need to do the configuration in "context.xml" file. 
+apache-tomcat-9.0.73/webapps/manager/META-INF/context.xml
+
+cd apache-tomcat-9.0.73/webapps/manager/META-INF/context.xml ----> vi context.xml ----> You will see a "valve" tag. You have to edit "Allow" tag ----> ".*" />
+
+Configuring the Users in Tomcat
+---------------------------------------------
+we need to edit the tomcat-users.xml to configure the users. The "tomcat-users.xml" file is available in "conf" folder
+<role rolename="manager-gui" />
+<user username="tomcat" password="tomcat" roles="manager-gui" />
+<role rolename="admin-gui" />
+<role rolename="manager-script" />
+<user username="admin" password="admin" roles="manager-gui,admin-gui,manager-script"/>
+
+cd bin
+./shutdown.sh
+./startup.sh
+
+Access Tomcat on Browser ----> Click on Server Status ----> Enter the username (admin) and password (admin)
+
+Inorder to do the automation, Jenkins is going to execute some script to deploy the war file into the Tomcat Webserver.
+___________________________________________________________
+Adding the manager-script role in tomcat-users.xml file
+___________________________________________________________
+In order to do the automation, Tomcat user should have a "manager-script" permission. There should be one user in the Tomcat with the "manager-script" permission. Then with that user credentials we can automate the deployment process.
+
+Goto MobaXTerm and Connect to the Instance ----> ls -l ----> cd apache-tomcat-9.0.73 ----> ls -l ----> cd conf ----> ls -l ----> You can see tomcat-users.xml ----> vi tomcat-users.xml ----> Scroll down till you see "role rolename="manager-gui"", go to the last but-one line and type the below
+<role rolename="manager-script" /> 
+Goto the last line of "user username="admin"", and type manager-script at the last, just before inverted quotations ----> esc ----> :wq
+
+Open Port no. 8080 for the server and access tomcat
+
+----------------
+Step 5:
+----------------
+Connect to Nexus Server and install Nexus using below commands; sudo -s ----> sudo apt-get update -y
+Setup the hostname for each server ----> hostnamectl set-hostname NexusServer ----> sudo -i
+
+Execute the below commands one by one ---->
+## #1: Install OpenJDK 17 on Ubuntu 24.04 LTS
+apt install openjdk-17-jdk openjdk-17-jre -y
+
+##Download the SonaType Nexus on Ubuntu using wget
+cd /opt 
+https://download.sonatype.com/nexus/3/nexus-3.80.0-06-linux-x86_64.tar.gz   
+
+
+##Extract the Nexus repository setup in /opt directory
+tar -zxvf latest-unix.tar.gz     
+
+##Rename the extracted Nexus setup folder to nexus
+sudo mv /opt/nexus-3.77.0-08/ /opt/nexus
+
+##As security practice, not to run nexus service using root user, so lets create new user named nexus to run nexus service
+sudo adduser nexus  ----> give password i.e root1234
+Press ENTER for 5 times
+Press Y
+You will see 'Adding user 'nexus' to group 'users'
+
+##To set no password for nexus user open the visudo file in ubuntu
+sudo visudo
+
+##Add below line after  "Defaults" 		use_pty
+nexus ALL=(ALL) NOPASSWD: ALL
+Save and exit (Control + X, Press Y, Click Enter)
+
+##Give permission to nexus files and nexus directory to nexus user
+sudo chown -R nexus:nexus /opt/nexus
+sudo chown -R nexus:nexus /opt/sonatype-work        
+
+##To run nexus as service at boot time, open /opt/nexus/bin/nexus.rc file, uncomment it and add nexus user as shown below
+sudo nano /opt/nexus/bin/nexus.rc
+Uncomment the line which you see after opening the file
+In the double quotes, keep "nexus". The finale line should be as shown below
+run_as_user="nexus"   
+Save and exit (Control + X, Press Y, Click Enter)
+
+##To Increase the nexus JVM heap size, you can modify the size as shown below
+vi /opt/nexus/bin/nexus.vmoptions
+
+Remove the first 15 lines i.e upto the space just before the "#additional vmoptions needed for java9+". Remember, dont delete "#additional vmoptions needed for java9+" line
+Paste the below content above "#additional vmoptions needed for java9+" line
+
+-Xms1024m
+-Xmx1024m
+-XX:MaxDirectMemorySize=1024m
+
+-XX:LogFile=./sonatype-work/nexus3/log/jvm.log
+-XX:-OmitStackTraceInFastThrow
+-Djava.net.preferIPv4Stack=true
+-Dkaraf.home=.
+-Dkaraf.base=.
+-Dkaraf.etc=etc/karaf
+-Djava.util.logging.config.file=/etc/karaf/java.util.logging.properties
+-Dkaraf.data=./sonatype-work/nexus3
+-Dkaraf.log=./sonatype-work/nexus3/log
+-Djava.io.tmpdir=./sonatype-work/nexus3/tmp 
+
+Save and exit
+
+##To run nexus as service using Systemd
+sudo vi /etc/systemd/system/nexus.service ----> Paste the below content ---->
+
+[Unit]
+Description=nexus service
+After=network.target
+
+[Service]
+Type=forking
+LimitNOFILE=65536
+ExecStart=/opt/nexus/bin/nexus start
+ExecStop=/opt/nexus/bin/nexus stop
+User=nexus
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target 
+
+Save and exit
+
+
+To start the nexus Service
+sudo systemctl start nexus 
+sudo systemctl enable nexus 
+sudo systemctl status nexus  
+
+Open port no. 8081 and access nexus
+
+----------------
+Step 6:
+----------------
+6.1. Install below plugins in Jenkins
+Pipeline stageview, Deploy to container, S3 publisher, nexus artifact uploader, SonarQube Scanner, Sonar Quality Gate, Maven Integration
+
+'Check' Restart Jenkins after the above plugins got installed
+
+6.2. Setup Tomcat Creds in Jenkins
+Jenkins ----> Manage Jenkins ----> Security ----> Credentials ----> Click on 'global' ----> Add credentials ----> Kind: Username with Password, Scope: Global, username: admin, Password: admin, ID: tomcat-creds, Description: tomcat-creds ----> Create 
+
+6.3. Create pipeline job
+Repo URL: https://github.com/KastroVKiran/Hotstar-App.git (HOTSTAR App)
+
+For the stage 'Deploy to Tomcat' generate the pipeline syntax;
+Open Pipeline Syntax in new tab ----> Sample step: deploy: Deploy war/ear to a container, WAR/EAR Files: **/*.war, Context Path: hotstarapp, Add container: Select 'Tomcat 9.x Remote', Credentials: Select the tomcat creds from dropdown, Tomcat URL: Paste upto 8080/ ----> Generate pipeline script ----> Copy and paste in 'Deploy to Tomcat' stage
+
+Paste the below script;
+pipeline {
+    agent any
+    stages {
+        stage('Git Checkout') {
+            steps {
+                git '<Repo URL>'
+            }
+        }
+        stage('Compile') {
+            steps {
+                sh 'mvn compile'
+            }
+        } 
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Arifacts') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('Deploy to Tomcat') {
+            steps {
+                <Paste The Script>
+            }
+        }
+    }
+}
+
+----> Apply and Build the job ----> Job will be successful
+
+Access the app in Tomcat browser. You will see hotstar app.
+
+6.4. Lets push the artifact to S3 Bucket (To do this we need 'S3 Publisher' plugin which we have already installed)
+To do this, we need to generate access and secret keys and we also need to create s3 bucket
+
+IAM ----> Create IAM User with Administrator Access ----> Open user ----> 'Security Credentials' tab ----> Create access key ----> Use case: AWS CLI,  ----> Next ----> Create access key
+
+S3 ----> Create a bucket with default settings but enable versioning
+
+Lets configure access keys in jenkins ----> Manage jenkins ----> System Configuration ----> System ----> Scroll down to "Amazon S3 Profiles" ----> Add ----> Profile name: s3creds, Access key: <PasteAccessKey>, Secret key: <PasteSecretKey> ----> Apply ---->  Save
+
+Open the job created ----> Open pipeline syntax (here we will generate script to push artifacts to S3) ----> Sample step: S3upload: Publish artifacts to S3 bucket, S3 profile: s3creds, Files to upload: **/*.war, Destination Bucket: <GiveTheBucketName>/ , Storage class: Standard, Bucket region: <SelectTheRegionofBucket>, 'check' Server side encryption ----> Generate pipeline script ----> Copy and paste in 'Artifacts to S3' stage
+
+Paste the below script;
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                git '<Repo URL>'
+            }
+        }
+        stage('Compile') {
+            steps {
+                sh 'mvn compile'
+            }
+        } 
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Arifacts') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('Deploy to Tomcat') {
+            steps {
+                <Paste The Script>
+            }
+        }
+        stage('Artifact to S3') {
+            steps {
+                <Paste The Script>
+            }
+        }
+    }
+}
+
+----> Apply and Build the job ----> Job will be successful ---> Goto S3 and check for artifact
+
+6.5. Working with SonarQube
+Goto SonarQube ----> Projects ----> Add project ----> Manually ----> Project key: hotstar, Display name: hotstar ----> Setup ----> Generate a token: hotstar ----> Generate ----> Copy the token ----> Lets configure the SonarQube credentials in Jenkins
+
+7bcd2c6b902808acc11586f66353a34a8b1abb93
+
+Jenkins ----> Manage Jenkins ----> Security ----> Credentials ----> Click on 'global' ----> Add creds ----> Kind: Secret text, Scope: Global, Secret: Paste the secret copied from SonarQube, ID: sonar, Description: sonar ----> Create
+
+Jenkins ----> Manage Jenkins ----> System Configuration ----> System ----> Scroll down to 'SonarQube servers' ----> 'Check' environment variables, Add SonarQube ----> Name: SonarQube, Server URL: <SonarQube URL> [only upto 9000] ----> Server authentication token: Select 'sonar' from dropdown ----> Apply ----> Save
+
+Jenkins ----> Manage Jenkins ----> System Configuration ----> Tools ----> Scroll down to 'sonarqube Scanner Installations' ----> Add SonarQube scanner ----> Name: sonarscanner, 'Check' Install automatically, Version: 7.1.0.4889 ----> Apply ----> Save
+
+Lets integrate SonarQube in the pipeline ----> Open the job ----> Paste the below script (In the script, i have added sonarqube-scanning' stage before the artifacts stage)
+
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                git '<Repo URL>'
+            }
+        }
+        stage('Compile') {
+            steps {
+                sh 'mvn compile'
+            }
+        } 
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('SonarQube Scanning') {
+            steps {
+                withSonarQubeEnv('sonarqube') {
+                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+                }
+            }
+        }
+        stage('Artifacts') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('Deploy to Tomcat') {
+            steps {
+                // <Paste The Script>
+            }
+        }
+        stage('Artifact to S3') {
+            steps {
+                // <Paste The Script>
+            }
+        }
+    }
+}
+
+
+----> Apply and Build the job ----> Job will be successful ---> Goto SonarQube dashboard and check it
+
+6.6. Nexus Configuration
+Goto Nexus tab in browser ----> Signin ----> Username: admin, To get the password, copy the path seen in the nexus browser ----> Goto the nexus connected tab in Moba ----> cat <Paste The Path> ----> Copy the password. dont copy "root@nexus" ----> Paste the password in nexus browser ----> Signin ----> Set the new password ----> Enable anonymous access ----> Signin
+
+Click on settings icon ----> Click on 'repositories' ----> Create repo ----> Scroll down and Click on 'maven2 hosted' ----> Name: hotstar, Version policy: Snapshot, Layout policy: Strict, Content disposition: Inline, Blob store: default, Deployment policy: Allow redeploy ----> Create repository ----> You will see 'hotstar' repo ----> Lets configure the Nexus credentials in Jenkins
+
+Jenkins ----> Manage Jenkins ----> Security ----> Credentials ----> Click on 'global' ----> Add creds ----> Kind: Username with Password, Scope: Global, Username: admin, Password: <Enter The Password of SonarQube>,ID: nexus, Description: nexus ----> Create
+
+Lets integrate Nexus in the pipeline ----> Open the job ----> Open pipeline syntax in new tab ----> Sample step: nexusArtifactUploader: Nexus Artifact Uploader, Nexus Version: Nexus3, Protocol: HTTP, Nexus URL: <Paste The Nexus URL> [Ex: IP:8081], Credentials: Select 'nexus' from dropdown, GroupId: in.kastro (this is in pom.xml file), Version: 8.3.3-Snapshot (this is in pom.xml file), Repository: hotstar (This name should be same as created in the Nexus console), Artifacts: Add: Artifact ID: myapp (this is in pom.xml file), Type: .war, Classifier: <Leave Blank>, File: target/myapp.war (Note: here instead of path, we can also mention **/*.war) ----> Generate script ----> Copy the script and paste in the below pipeline stage of 'Nexus'
+Paste the below script (In the script, i have added 'Nexus' stage after the Tomcat stage)
+
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                git '<Repo URL>'
+            }
+        }
+        stage('Compile') {
+            steps {
+                sh 'mvn compile'
+            }
+        } 
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('SonarQube Scanning') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+                }
+            }
+        }
+        stage('Artifacts') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('Deploy to Tomcat') {
+            steps {
+                // <Paste The Script>
+            }
+        }
+        stage('Nexus') {
+            steps {
+                // <Paste The Script>
+            }
+        }
+        stage('Artifact to S3') {
+            steps {
+                // <Paste The Script>
+            }
+        }
+    }
+}
+
+----> Apply and Build the job ----> Job will be successful ---> Goto Nexus dashboard and click on 'hotstar' ----> Copy the URL you see and paste in new tab ----> 	Click on 'browse' ----> You will see the war file got stored as artifact
+Goto Tomcat and check for application
+
+
+------------------------------------------------------------
+2️⃣ Recovering Jenkins password
+------------------------------------------------------------
+
+cd /var/lib/jenkins ----> vi config.xml ----> Scroll to <UseSecurity> tag ----> Change 'true'  to 'false' ----> restart the jenkins ----> sudo systemctl restart jenkins ----> Login to the jenkins
+
+Jenkins console ----> Manage jenkins ----> Security ----> Security Realm: You can see 'None', change 'none' to 'Jenkins own user database' ----> Apply ----> Save
+
+MobaXTerm ----> cd /var/lib/jenkins ----> vi config.xml ----> You can see 'true' for security tag.
+'True' is being seen because of the changes in security realm.
+
+Jenkins console ----> People ----> Select 'Username' of jenkins ----> Configure ----> Scroll down to see 'Password' ----> Type password ----> Apply ----> Save.
+
+Logout of the jenkins ----> Login again with new password.
+
+
+
+---------------------------------------------------------
+🟥 SonarQube
+--------------------------------------------------------- 
+Repo URL: https://github.com/KastroVKiran/SonarQube-Project-Kastro.git (Code along with text document for commands and setup)
+Video Link: https://youtu.be/opJAfDOCZuI?si=C58p0r025HM-1n9K
+---------------------------------------------------------
+🟥 Nexus
+---------------------------------------------------------
+Repo URL: https://github.com/KastroVKiran/Nexus-by-Kastro.git (For Text Document Setup and Commands)
+Repo URL: https://github.com/KastroVKiran/Nexus-Demo.git (For the application code)
+Video Link: https://youtu.be/opJAfDOCZuI?si=OIq-XZimpK8ap_go
+
+
+
+
+
+
+
