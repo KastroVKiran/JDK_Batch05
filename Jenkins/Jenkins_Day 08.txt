@@ -1,0 +1,53 @@
+												Online LIVE Training on 
+										JENKINS 👨‍💼 + DOCKER 🐳 + KUBERNETES ☸️
+														by
+												KASTRO KIRAN V
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Agenda of the Session
+*****************************************
+1️⃣ Jenkins RBAC
+2️⃣ Interview Questions
+
+------------------------------------------------------------
+1️⃣ Jenkins RBAC
+------------------------------------------------------------
+RBAC - Roll Based Account Control
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------
+🟥 SonarQube
+--------------------------------------------------------- 
+Repo URL: https://github.com/KastroVKiran/SonarQube-Project-Kastro.git (Code along with text document for commands and setup)
+Video Link: https://youtu.be/opJAfDOCZuI?si=C58p0r025HM-1n9K
+---------------------------------------------------------
+🟥 Nexus
+---------------------------------------------------------
+Repo URL: https://github.com/KastroVKiran/Nexus-by-Kastro.git (For Text Document Setup and Commands)
+Repo URL: https://github.com/KastroVKiran/Nexus-Demo.git (For the application code)
+Video Link: https://youtu.be/opJAfDOCZuI?si=OIq-XZimpK8ap_go
+
+
+
+
+
+
+
