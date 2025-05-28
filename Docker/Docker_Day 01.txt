@@ -13,25 +13,57 @@ Need for Docker
 Containerization - How it works
 
 
+Monolithic Vs Microservice Architecture
+-----------------------------------------------------------
+=> Monolithic Architecture
+Single Codebase: The entire application is written as a single unit of code. This includes the user interface (UI), business logic, and data access layer.
+Centralized Deployment: The application is deployed as a whole unit. Any changes require the entire application to be redeployed.
+Shared Database: All functionalities of the application share a single database.
 
-------------------------------------------------------------
+Pros:
+Simpler Development: Easier to set up and develop for small projects. Changes are quicker to implement as everything is in one place.
+Efficient Communication: Since everything is within the same codebase, communication between different parts of the application is simpler.
 
-------------------------------------------------------------
+Cons:
+Limited Scalability: Difficult to scale the application as it grows. Adding new features or handling increased traffic can become cumbersome.
+Maintenance Challenges: Troubleshooting issues can be time-consuming due to the interconnected nature of the codebase. Modifying one part might have unintended consequences elsewhere.
+Slow Development for Large Projects: As the project grows, making changes becomes complex and time-consuming.
 
+=> Microservice Architecture
+Independent Services: The application functionality is divided into smaller, self-contained services. Each service has a well-defined purpose and communicates with others through APIs (Application Programming Interfaces).
+Decentralized Deployment: Each service can be independently deployed, scaled, and updated without affecting other services.
+Database Choice: Services can have their own databases depending on their specific needs.
 
+Pros:
+Scalability: Services can be scaled independently based on their needs. This allows for better handling of increased traffic or specific functionalities.
+Faster Development: Development teams can work on different services concurrently, leading to faster development cycles.
+Improved Maintainability: Troubleshooting becomes easier as issues can be isolated to specific services.
 
+Cons:
+Increased Complexity: The overall system architecture becomes more complex due to the distributed nature of services and communication overhead.
+Development Overhead: Setting up the infrastructure and communication between services requires additional effort.
 
----------------------------------------------------------
-🟥 SonarQube
---------------------------------------------------------- 
-Repo URL: https://github.com/KastroVKiran/SonarQube-Project-Kastro.git (Code along with text document for commands and setup)
-Video Link: https://youtu.be/opJAfDOCZuI?si=C58p0r025HM-1n9K
----------------------------------------------------------
-🟥 Nexus
----------------------------------------------------------
-Repo URL: https://github.com/KastroVKiran/Nexus-by-Kastro.git (For Text Document Setup and Commands)
-Repo URL: https://github.com/KastroVKiran/Nexus-Demo.git (For the application code)
-Video Link: https://youtu.be/opJAfDOCZuI?si=OIq-XZimpK8ap_go
+=> Container
+A container in Docker is a lightweight, standalone, and executable package of software that includes everything needed to run a piece of software, including the code, runtime, system tools, libraries, and settings. 
+Containers are isolated from one another and from the host system, ensuring that they run consistently across different environments.
+
+=> Containerization
+It is the packaging together of software code with all it’s necessary components like libraries, frameworks, and other dependencies so that they are isolated in their own "container."
+
+=> Inside containers, application will be deployed.
+Containers will not have OS by default.
+If OS is not there, we cannot install packages.
+Hence we cannot deploy application.
+For this purpose we will use Images.
+Inside docker images we will have OS & Packages.
+For ex, if you want to deploy an app on container, first we need to download the image. 
+Image contains OS & packages. 
+From image we will create containers.
+Inside containers we will deploy application.
+Image acts like OS ; Container acts like application
+To create a container, image, deploy the app in container we will use Docker.
+Containerization enables the app. to run quickly and reliably from one environment to another without the need to install and configure dependencies separately.
+
 
 
 
