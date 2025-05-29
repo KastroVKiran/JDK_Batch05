@@ -1,0 +1,139 @@
+												Online LIVE Training on 
+										JENKINS 👨‍💼 + DOCKER 🐳 + KUBERNETES ☸️
+														by
+												KASTRO KIRAN V
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Agenda of the Session - DOCKER
+*****************************************
+1️⃣ What is Docker
+2️⃣ Docker - Introduction
+3️⃣ Docker - Advantages
+4️⃣ Docker Architecture
+5️⃣ Docker - Components
+6️⃣ Docker Workflow
+7️⃣ Installation of Docker
+8️⃣ Introduction to Dockerhub - Account Creation
+9️⃣ Working with Docker Commands - Part 1
+
+
+
+
+
+
+------------------------------------------------------------
+1️⃣ What is Docker
+------------------------------------------------------------
+Docker is a containerization platform that provides the ability to package and run an application in a loosely isolated environment called a Container.
+
+It makes deployment and development efficient.
+
+It is a PaaS Model.
+
+-------------------------------------------------------------
+2️⃣ Docker - Introduction
+-------------------------------------------------------------
+Free and Open Source.
+It is platform independent.
+Docker is used to create Containers.
+Can create, run, and deploy an App on containers.
+Containers will use host resources like CPU, RAM, OS…
+For ex; if docker is installed on Linux, then Linux is our host resource.
+
+-------------------------------------------------------------
+3️⃣ Docker - Advantages
+-------------------------------------------------------------
+Portability and Consistency
+	Runs anywhere
+Faster development and deployment
+	Pre-packaged environments
+	Simplified updates and scaling
+Resource efficiency and scaling
+	Lightweight and efficient
+	Isolated workspaces
+Improved collabs and version control
+	Standardized images
+	Version control for applications
+	Increased developer productivity
+	Security
+
+-------------------------------------------------------------
+4️⃣ Docker Architecture
+-------------------------------------------------------------
+Docker uses a Client-Server architecture.
+It has a client component that talks to a server component using Restful API.
+Docker Engine is responsible to build and run the docker containers.
+
+-------------------------------------------------------------
+5️⃣ Docker - Components
+-------------------------------------------------------------
+Docker Host
+	It is a physical or VM where Docker is installed
+Docker File
+	Contains instructions/configuration to build docker image
+Docker Image
+	It is a package that contains OS, source code, project dependencies, tools, libraries
+Docker Hub/Registry
+	It is a public repository to store docker images
+Docker Client
+	Whenever we execute any docker command, it will start and interact with docker engine and it will execute the commands 
+Docker Engine/Daemon
+	A s/w using which we will create docker images and containers.
+	All docker commands gets executed here
+Docker Container
+	It is a standardized unit that has everything the application needs to run
+	This is where app will execute. Run-time instance of docker image
+
+---------------------------------------------------------
+6️⃣ Docker Workflow
+--------------------------------------------------------- 
+Write Dockerfile
+Build image using Dockerfile
+Run the image to create container
+
+---------------------------------------------------------
+7️⃣ Installation of Docker
+---------------------------------------------------------
+Amazon Linux 2 AMI, t2.micro, 20 GB, default
+    1  sudo yum update -y
+    2  yum install docker -y
+    3  systemctl start docker
+    4  docker -v
+
+---------------------------------------------------------
+8️⃣ Introduction to Dockerhub - Account Creation
+---------------------------------------------------------
+hub.docker.com ----> using gmail or github
+dockerhub consists of default images which can be pulled and create containers as per the requirement
+---------------------------------------------------------
+9️⃣ Working with Docker Commands - Part 1
+---------------------------------------------------------
+docker images
+docker ps
+docker ps -a
+docker pull <ImageName>
+
+To create containers;
+Method 1: docker run -it --name <ContainerName> <ImageName>
+Method 2: docker run -it -d --name <ContainerName> <ImageName>
+
+To come out of the container;
+1. control+p+q ----> to come out of the container in safe mode
+2. control+d ----> will kill all the things inside the container, it is not recommended
+
+To go inside a container;
+1. docker attach <ContainerName> ----> connect to the main process of the container
+2. docker exec -it <ContainerName> /bin/bash ----> Preferred method ----> helps to connect to the new process where we can safely work
+
+Kill Vs Stop
+The difference b/w kill and stop is, kill will forcely kills the container. All the process inside the container will be stopped immediately.
+But stop will stop all the process smoothly and then it will stop the container
+If you dont want the container, use KILL.
+If you want to use the container, use STOP
+
+----------------------------------------
+OS Level Virtualization
+----------------------------------------
+Virtualization is the process of using the resources in an effective and efficient way
+OS level virtualization means, for ex, if i have an OS and inside the OS i have some files, directories, etc... if i want to take the backup of complete OS, it is called as OS Level Virtualization
+
+DOCKERFILE
