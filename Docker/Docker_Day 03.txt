@@ -1,0 +1,200 @@
+												Online LIVE Training on 
+										JENKINS 👨‍💼 + DOCKER 🐳 + KUBERNETES ☸️
+														by
+												KASTRO KIRAN V
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Agenda of the Session - DOCKER
+*****************************************
+1️⃣ Some Practical Scenarios 
+2️⃣ Dockerfile
+3️⃣ Dockerfile Components
+4️⃣ Working with Dockerfile
+
+
+---------------------------------------------------------
+Installation of Docker
+---------------------------------------------------------
+Amazon Linux 2 AMI, t2.micro, 20 GB, Choose default SG
+    1  sudo yum update -y
+    2  yum install docker -y
+    3  systemctl start docker
+    4  docker -v
+------------------------------------------------------------
+1️⃣ Practical Scenarios
+------------------------------------------------------------
+1. File --- VM --- Copy this file to a container
+2. Renaming a container
+	 docker rename kastro-cont kk-container
+3. Pushing the images to dockerhub
+4. Can I create a container without pulling the image?
+-------------------------------------------------------------
+2️⃣ Dockerfile
+-------------------------------------------------------------
+A Dockerfile is text document that contains all the commands an user could call on the command line to create a docker image.
+It is a blueprint for building docker images
+A dockerfile consists of a series of instructions and arguments.
+Each instruction adds a new layer to the image
+Usual way of writing the name of file is - Dockerfile
+In Dockerfile we will use DSL keywords
+	- DSL --- Domain Specific Language
+
+		    BUILD				RUN		
+Dockerfile ------------> Docker Image -------------> Docker Container
+Whatever the packages i want to install on my container, we will include/write in the Dockerfile
+
+-------------------------------------------------------------
+3️⃣ Dockerfile Components
+-------------------------------------------------------------
+We can also call as KEYWORDS
+All the components/keywords must be written in CAPITAL LETTERS
+
+FROM
+RUN
+CMD
+ENTRYPOINT
+COPY
+ADD
+WORKDIR
+LABEL
+ENV
+ARGS
+EXPOSE
+
+-------------------
+1. FROM
+-------------------
+It indicates the base image to run our application
+On top of base image, we will create our own images
+
+FROM amazonlinux 
+FROM MySQL
+FROM ubuntu
+FROM tomcat
+FROM httpd
+FROM nginx
+
+Every new base image should be written in a new line
+
+-------------------
+2. RUN
+-------------------
+It is used to execute the commands on top of base image
+RUN instructions will get executed "while creating the image"
+
+FROM ubuntu
+RUN touch kastro.txt
+RUN yum install maven -y
+RUN git clone <Repo-URL>
+
+All RUN instructions will be processed from TOP to BOTTOM
+RUN is used to install any packages
+
+-------------------
+3. CMD
+-------------------
+It is used to execute the commands on top of base image
+CMD instructions will get executed "while creating the container"
+We can write multiple CMD instructions, but docker will process/execute only the last CMD instruction. Here there is no use of writing multiple CMD instructions inside the dockerfile
+
+FROM ubuntu
+RUN touch kastro.txt
+CMD mkdir docker
+RUN yum install maven -y
+CMD touch docker.py
+RUN git clone <Repo-URL>
+
+Demo 1
+FROM ubuntu
+RUN apt update -y
+RUN apt install git -y
+
+-------------------
+4. COPY
+-------------------
+It is used to copy the files or folders to a docker image while create the image
+It is also used to copy the files from one location to another location
+It is also used to copy the files available in the VM to the docker container 
+
+COPY <SourceLocation> <DestinationLocation>
+
+-------------------
+5. ADD
+-------------------
+It is used to copy the files available on internet to the container
+
+ADD & COPY Differences
+ADD command can download the files from remote location (internet)
+ADD command can also be used to download the files using URL
+COPY command will copy the files from one location to another 
+ADD keyword will extract the tar files while copying to the image
+
+FROM ubuntu
+RUN apt update -y
+RUN apt install maven -y
+COPY docker.txt /tmp
+ADD https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.105/bin/apache-tomcat-9.0.105.tar.gz /tmp
+
+-------------------
+6. WORKDIR
+-------------------
+Using this keyword we can set the working directory of an image/container
+It will help us to go directly inside the specified directory
+
+-------------------
+7. LABEL
+-------------------
+It is used to assign the metadata for our image
+Labels are represented in the form of key-value pairs
+
+FROM ubuntu
+RUN apt update -y
+RUN apt install maven -y
+COPY docker.py /tmp
+ADD https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.105/bin/apache-tomcat-9.0.105.tar.gz /tmp
+WORKDIR /tmp
+LABEL author Kastro
+
+-------------------
+8. ENV
+-------------------
+It is used to set the environment variable
+ENV variables will run inside a container
+Here also we will use key-value pairs
+-------------------
+9. EXPOSE
+-------------------
+It is used to expose our application on a specific port number
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------
+4️⃣ Working with Dockerfile
+-------------------------------------------------------------
+
+
