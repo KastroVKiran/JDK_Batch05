@@ -1,0 +1,94 @@
+												Online LIVE Training on 
+										JENKINS 👨‍💼 + DOCKER 🐳 + KUBERNETES ☸️
+														by
+												KASTRO KIRAN V
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Agenda of the Session - DOCKER
+*****************************************
+1️⃣ Working with Dockerfile 
+2️⃣ Docker Volumes - Multiple Scenarios
+ 
+-------------------
+9. EXPOSE
+-------------------
+Lets say i have a GitHub repo, which has a sample html file. Now we need to write a Dockerfile to install apache webserver (to host the html page)
+
+vi Dockerfile
+FROM ubuntu
+RUN apt update -y
+RUN apt install apache2 -y
+RUN apt install apache2-utils -y
+RUN apt clean
+COPY ECR-ECS-Project/ /var/www/html/
+RUN service apache2 restart
+EXPOSE 80
+CMD ["/usr/sbin/apachectl", "-D", "FOREGROUND"]
+
+docker run -itd --name container1 -p 5000:3000 image1:v1
+5000 is the host port
+3000 is the container port
+
+-------------------
+10. ENTRYPOINT
+-------------------
+These instructions will be executed while the container is getting created
+ENTRYPOINT instructions cannot be override. CMD instructions can be override
+
+-------------------
+11. VOLUMES
+-------------------
+It is used to store data
+Docker Volumes
+
+----------------------------
+12. MAINTENER
+----------------------------
+It represents who is maintaining the dockerfile 
+Syntax: MAINTAINER <AuthorName> <AuthorEmail>
+
+--------------------------
+13. ARGS
+--------------------------
+It is used to avoid the hardcode values in the docker file
+These are the variables which runs outside of a container
+ARGS will be passed on a container
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+DOCKER VOLUMES
+
+Volume indicates 'storage'
+It is just a folder inside the container
+We will use docker volumes to store the data of docker containers
+Docker volumes are also called as Persistent Volumes.
+WE can share docker volumes from one container to another container
+One volume can be attached to multiple container, but at a time we can attach to one volume to only one container
+We can create and attach morethan 1 volume for a single container
+The data inside the volume will be stored on local machine (VM)
+
+docker volumes ls
+
+Method 1 --- Creating volume using dockerfile
+
+vi Dockerfile
+FROM ubuntu
+VOLUME ["volume1"]
+
+Method 2 --- I want to share the above create volume i.e volume1 to a new container (Container2)
+
+Method 3 --- Creating volumes using command
+Create a new container but i dont want to get the volume from the existing container, instead i want to create a new volume called volume2
+
+Method 4 --- Creating a volume in the host machine and will attach to a new container
+
+
+df -h
+You should see 5GB volume
+Create a container using this ebs volume
+docker run -it --name container7 -v /mnt/ebs-volume/:<VolumeName>
+
+
+
+
+
+
+
