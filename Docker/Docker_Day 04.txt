@@ -24,6 +24,8 @@ RUN service apache2 restart
 EXPOSE 80
 CMD ["/usr/sbin/apachectl", "-D", "FOREGROUND"]
 
+GITHUB REPO FOR PRACTICE: https://github.com/KastroVKiran/ECR-ECS-Project.git
+
 docker run -itd --name container1 -p 5000:3000 image1:v1
 5000 is the host port
 3000 is the container port
