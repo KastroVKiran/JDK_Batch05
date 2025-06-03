@@ -57,7 +57,7 @@ Docker-Compose Project 1 - Deploying Microservice based Ecommerce Application
 https://github.com/KastroVKiran/Kastro-Ecom-DC.git
 
 -----------------------------------------------------------------------------------------------------------------
-Docker-Compose Project 2 - NGINX Load Balancer Concept for Docker - Python App
+Docker-Compose Project 2 - NGINX Load Balancer Concept for Docker - Python App (With Public Docker Image)
 -----------------------------------------------------------------------------------------------------------------
 Nginx can work as a load balancer, web server, reverse proxy
 In docker we dont have the concept of load balancer
@@ -144,7 +144,7 @@ Open Port 80 for VM and access the App using <PublicIP>:80 ----> You will see th
 Now even if one of the backend containers goes down, our application will still run. 
 
 ----------------------------------------------------------------------------------------------------------
-Docker-Compose Project 3 - NGINX Load Balancer Concept for Docker - Python App
+Docker-Compose Project 3 - NGINX Load Balancer Concept for Docker - Python App (With Custom App)
 ----------------------------------------------------------------------------------------------------------
 Deploy multiple Python Flask applications as backend services.
 Use Nginx as a load balancer to distribute traffic.
