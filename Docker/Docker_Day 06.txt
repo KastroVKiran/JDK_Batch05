@@ -1,0 +1,261 @@
+												Online LIVE Training on 
+										JENKINS 👨‍💼 + DOCKER 🐳 + KUBERNETES ☸️
+														by
+												KASTRO KIRAN V
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Agenda of the Session - DOCKER
+*****************************************
+1️⃣ Deploying Spring Boot Java App (Chat App)
+	https://github.com/KastroVKiran/SpringBootJavaApp-Docker.git
+2️⃣ Deploying 3 Tier App (Node App)
+		https://github.com/KastroVKiran/DC-Project-BookApp.git
+3️⃣ Docker Swarm - Concept & Project
+4️⃣ DevOps Mock Exam Application (Task)
+	https://github.com/KastroVKiran/devops-exam-app.git
+
+Standalone --- jar file
+Web application --- war file
+	Normal java application --- war file
+	SpringBoot java application --- jar file
+
+Dockerfile - Multi Build Dockerfile
+
+✅ Step-by-step process to push the image to dockerhub
+Method 1
+1. Tag the existing image with your Docker Hub username:
+docker tag cart-service:v1 kastrov/cart-service:v1
+2. Push the newly tagged image to Docker Hub:
+docker push kastrov/cart-service:v1
+
+Method 2
+To create new image with dock hub username attached
+	To build the image 	-----> docker build -t kastrov/order-service:v1 .
+	To create container 	-----> docker run -itd --name ordercont -p 83:80 kastrov/order-service:v1
+	To push the image 	-----> docker push kastrov/order-service:v1
+
+🚀 Why Use Multi-Stage Builds?
+1. ✅ Smaller Final Image
+Without multi-stage:
+Your final image includes unnecessary tools like Maven, Gradle, GCC, or NPM.
+This leads to bloated images (hundreds of MB larger).
+
+With multi-stage:
+The final image contains only the runtime environment and your compiled code.
+Often 70–90% smaller.
+
+📌 Example:
+A Spring Boot app image:
+With Maven + JDK: ~500–700 MB
+With Multi-stage: ~100–150 MB
+
+2. 🛡️ Improved Security
+Fewer tools and files in the final image = smaller attack surface.
+No credentials, source code, or temporary files leak into production.
+
+3. 📦 Cleaner Production Image
+No leftover build artifacts.
+Only essential files are included (like .jar, config files, static resources).
+
+4. 💾 Better Layer Caching
+Docker caches layers smartly.
+By copying pom.xml and running mvn dependency:resolve first, Docker avoids re-downloading dependencies every time the source code changes.
+
+5. 💡 Build Once, Run Anywhere
+You can build your app in a heavyweight environment (e.g., full JDK, compilers).
+But deploy it in a slim, fast runtime (e.g., JRE-only or scratch base image).
+
+🛠️ When Should You Use Multi-Stage Builds?
+Use multi-stage builds when:
+
+Scenario								Use Multi-Stage?	Why
+Compiled languages (Java, Go, Rust, C++)	✅ Yes			Separate build toolchains from runtime.
+Node.js / React / Angular frontend			✅ Yes			Build with Node.js, serve with Nginx or lightweight image.
+Production-grade apps					✅ Yes			Smaller, secure, faster images.
+Debug/test-only containers				❌ Not needed	You want full tools for interactive use.
+Script-only apps (e.g., Python)			Optional			If no compilation, benefit is minimal—but can still clean up extra files.
+
+
+🧱 Stage 1: Build the application
+ FROM maven:3.9.6-eclipse-temurin-17-alpine AS build
+Base Image: Uses a lightweight Alpine-based image that includes:
+Maven 3.9.6: A build automation tool for Java.
+Temurin 17 (Eclipse Adoptium): A JDK implementation of Java 17.
+AS build: Names this stage as build for reference in the next stage.
+
+WORKDIR /app
+Sets the working directory inside the container to /app.
+All subsequent commands will run from this directory.
+
+COPY pom.xml .
+COPY src ./src
+Copies the pom.xml (Maven configuration) to the container first.
+Then copies the src directory (source code) to the container.
+This split-copy is efficient for Docker layer caching: if pom.xml hasn’t changed, dependencies won't be re-downloaded.
+
+RUN mvn clean package -DskipTests
+Runs a Maven command to:
+clean: Remove old builds.
+package: Compile the code and package it into a .jar file.
+-DskipTests: Skips running tests to save time in the build.
+
+🧪 Stage 2: Create a smaller runtime image
+FROM eclipse-temurin:17-jre-alpine
+This is a runtime-only image:
+Has Java 17 JRE (no compilers or Maven).
+Based on Alpine, a lightweight Linux distro ideal for small images.
+
+WORKDIR /app
+Sets the working directory to /app.
+
+COPY --from=build /app/target/chat-app-0.0.1-SNAPSHOT.jar app.jar
+Copies the built JAR file from the previous build stage (build) into the current image.
+
+RUN mkdir -p /app/static/sounds
+
+RUN touch /app/static/sounds/message.mp3
+Creates an empty MP3 file named message.mp3.
+Placeholder for a real sound file that would be used in notifications.
+
+EXPOSE 9999
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
+Sets the default command to run when the container starts.
+Launches the Spring Boot application using the app.jar.
+
+---------------------------------------------------------
+Installation of Docker
+---------------------------------------------------------
+Amazon Linux 2 AMI, t2.micro, 20 GB, Choose default SG
+    1  sudo yum update -y
+    2  yum install docker -y
+    3  systemctl start docker
+    4  docker -v
+
+----------------------------------------
+Docker Compose Installation
+----------------------------------------
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+ls /usr/local/bin/
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose version
+
+--------------------------------------------------------------------
+3️⃣ Docker Swarm - Concept & Project
+--------------------------------------------------------------------
+Till now we have seen how to the docker containers.
+But we haven't focused on managing the docker containers.
+To manage the docker containers, we will use DOCKER SWARM
+Docker Swarm is an Orchestration Tool for containers
+
+Container ---- Deleted the container ---- VM terminated
+Docker swarm uses multiple host machines
+It is a cluster - cluster means group of servers
+Cluster consists of Master/Leader/Manager and Worker Nodes
+Worker Nodes and Master Node consists of containers
+If i want to have HA for my application, we will use docker swarm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------
+Docker-Compose Project 2 - NGINX Load Balancer Concept for Docker - Python App
+-----------------------------------------------------------------------------------------------------------------
+Nginx can work as a load balancer, web server, reverse proxy
+In docker we dont have the concept of load balancer
+
+1. Launch Amazon Linux 2 VM 
+sudo su
+sudo update -y
+sudo yum install docker -y
+systemctl start docker
+
+Before following the below steps, make sure all the below given files should be in same directory
+
+2. vi Dockerfile
+
+
+3. vi dockercompose.sh
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+ls /usr/local/bin/
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose version
+
+4. Create the Nginx Load Balancer Config (nginx.conf)
+vi nginx.conf --->
+
+# Define the upstream backend servers
+upstream backend {
+    server backend1:5000;
+    server backend2:5001;
+    server backend3:5002;
+}
+
+server {
+    listen 80;
+
+    location / {
+        proxy_pass http://backend;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+----> esc ---> :wq
+
+5. Write docker-compose.yml file
+vi docker-compose.yml ---->
+version: '3.8'
+services:
+  nginx:
+    build: .
+    container_name: nginx-lb
+    ports:
+      - "80:80"
+    depends_on:
+      - backend1
+      - backend2
+      - backend3
+  backend1:
+    image: ghcr.io/benc-uk/python-demoapp
+    container_name: backend1
+    expose:
+      - "5000"
+  backend2:
+    image: ghcr.io/benc-uk/python-demoapp
+    container_name: backend2
+    expose:
+      - "5001"
+  backend3:
+    image: ghcr.io/benc-uk/python-demoapp
+    container_name: backend3
+    expose:
+      - "5002"
+
+----> esc ---> :wq
+
+6. Run docker-compose
+docker-compose up -d 
+docker-compose ps
+
+Open Port 80 for VM and access the App using <PublicIP>:80 ----> You will see the app.
+
+Now even if one of the backend containers goes down, our application will still run. 
+
