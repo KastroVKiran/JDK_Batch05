@@ -1,0 +1,133 @@
+												Online LIVE Training on 
+										JENKINS 👨‍💼 + DOCKER 🐳 + KUBERNETES ☸️
+														by
+												KASTRO KIRAN V
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Agenda of the Session - DOCKER
+*****************************************
+1️⃣ Stateful Vs Stateless
+2️⃣ Installing Jenkins using Docker
+3️⃣ Docker Networks
+4️⃣ Docker Swarm - Managing Secrets
+5️⃣ Replicated Service vs Global Service
+6️⃣ Docker Portainer
+-----------------------------------------------------------
+1️⃣ Stateful Vs Stateless
+-----------------------------------------------------------
+📌 1. What is a Stateless Container?
+A stateless container:
+Does not persist any data once stopped or destroyed.
+Treats every request as independent, without remembering previous requests.
+Is easier to scale horizontally (add more containers).
+Is ephemeral—you can create and destroy it at will.
+✅ Use Cases
+REST APIs
+Web frontends (React, Angular)
+Microservices not storing user sessions/data locally
+Stateless workers or job runners
+
+📌 2. What is a Stateful Container?
+A stateful container:
+Maintains data or session across multiple requests.
+Needs to store data either locally or via persistent storage (volumes, external DBs).
+Is harder to scale horizontally without shared storage or orchestration logic.
+Commonly used in databases, user session apps, or services that store cache/data.
+✅ Use Cases
+Databases (MySQL, MongoDB)
+Redis cache
+Applications storing user sessions locally
+File uploads to local filesystem
+
+🧰 Best Practices
+Use stateless containers as much as possible — they’re scalable and resilient.
+For stateful apps, use volumes or external data stores.
+In Kubernetes, use StatefulSets for managing stateful containers (like DBs), and Deployments for stateless apps.
+-----------------------------------------------------------
+2️⃣ Installing Jenkins using Docker
+-----------------------------------------------------------
+docker run -itd --name jenkins -p 8080:8080 jenkins/jenkins (Here, 'jenkins/jenkins' is the jenkins image name available in GitHub) ----> Open port 8080 for VM and access Jenkins ----> You can see the jenkins initial admin password. Copy it.  ----> Goto EC2 VM and enable port 8080 ----> Access the jenkins in new tab ----> Paste the jenkins password ----> Install suggested plugins  ----> You will see the jenkins dashboard ----> Goto the Moba, you can see the plugins downloading automatically.
+
+-----------------------------------------------------------
+3️⃣ Docker Networks
+-----------------------------------------------------------
+Docker Networking is used to make the communication between the multiple containers that are running on same host machines or on different host machines.
+In Docker we have 3 default networks;
+	1. Bridge -- if 2 containers which are there in the same host machine want to communicate with each other -- preferred
+	2. Host -- if you want to use HOST - EC2 Networking
+	3. None -- if you dont want to expose your application
+	4. Overlay -- if 2 containers which are there on different host machines want to communicate with each other -- default in docker swarm
+
+For the above 3 networks we have network drivers.
+Network drivers are the ones that provides network for our docker containers.
+
+Different docker network drivers;
+Bridge driver
+Host driver
+None
+
+Bridge driver is recommended when we are using standalone containers. It will assign one IP for each docker container
+Host driver is also used to run standalone containers but it will not assign any IP for containers
+Overlay driver is used for orchestration
+Macvlan network driver provider physical IP for container
+
+Container 1: 172.17.0.2
+Container 2: 172.17.0.3
+
+-----------------------------------------------------------
+4️⃣ Docker Swarm - Managing Secrets
+-----------------------------------------------------------
+A secret is an information that should be hidden unauthorized access.
+Ex: Usernames, passwords, private keys, ssl certificates
+
+vi password.txt
+username=Kastro
+password=kastro1234
+
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: webuser
+      POSTGRES_PASSWORD_FILE: /run/secrets/kastrosecret
+      POSTGRES_DB: appdatabase
+    secrets:
+      - kastrosecret
+
+  adminer:
+    image: adminer:latest
+    ports:
+      - 8080:8080
+
+secrets:
+  kastrosecret:
+    file: password.txt
+
+-----------------------------------------------------------
+6️⃣ Docker Portrainer
+-----------------------------------------------------------
+Docker portrainer is a GUI for docker
+
+First setup docker-swarm cluster
+
+Connect to all the VMs
+Setup the connections with workers
+
+In Master ---> 
+curl -L https://downloads.portainer.io/ce2-16/portainer-agent-stack.yml -o portainer-agent-stack.yml
+docker stack deploy -c portainer-agent-stack.yml portainer
+
+docker ps
+
+public-ip of swarm master:9443 
+
+https://13.233.198.125:9443 (OR)
+http://13.233.198.125:9000
+
+Setup password
+Click on refresh
+You will see "Primary: up" ----> Click on it ----> Dashboard (Leftpane) ----> You can see all the details
+We can also create containers using GUI ---> Try it by going to containers (left pane)
+
+Docker swarm has limitations which is autoscaling. And there are many other drawbacks (not suitable for huge environments, we cannot manage containers) as well. So the alternative is KUBERNETES. In order to manage the containers efficiently we will go with K8S.
