@@ -1,0 +1,91 @@
+🐳 Docker Interview Questions & Answers (30 Questions)
+1. What is Docker and how have you used it in your projects?
+Docker is a containerization platform that allows packaging an application along with its dependencies into a lightweight, portable container. I’ve used Docker to containerize microservices, ensuring consistent environments from development to production. My pipelines often build Docker images using Dockerfiles and push them to ECR for deployment on ECS or EKS.
+
+2. What is the difference between a Docker container and a virtual machine?
+A Docker container shares the host OS kernel and is much more lightweight and faster to start than a virtual machine, which includes the full guest OS. Containers are ideal for microservice-based architecture due to low overhead and quick scaling.
+
+3. What is the role of Dockerfile in your projects?
+Dockerfile is a blueprint for creating Docker images. I use it to define base images, copy application code, install dependencies, and set entry commands. For optimization, I use multi-stage builds to reduce image size and isolate build and runtime layers.
+
+4. How do you optimize Docker images?
+I use small base images like alpine, reduce the number of layers by combining commands, clean up temporary files, and leverage .dockerignore to avoid copying unnecessary files. In CI pipelines, I also use multi-stage builds to separate build-time dependencies from runtime.
+
+5. What’s the difference between CMD and ENTRYPOINT in Docker?
+CMD provides default arguments to a container, while ENTRYPOINT defines the main executable. If both are present, CMD is passed as arguments to ENTRYPOINT. I use ENTRYPOINT for consistent startup behavior and CMD for default arguments that can be overridden.
+
+6. How do you manage Docker containers in production?
+I deploy Docker containers using orchestration tools like Kubernetes (EKS) or ECS in AWS. I use docker-compose only for local development. In production, I rely on CI/CD pipelines to build, tag, push, and deploy containers securely.
+
+7. How do you handle sensitive data in Docker containers?
+I avoid hardcoding secrets in Dockerfiles or images. Instead, I inject them at runtime using environment variables, AWS Secrets Manager, or Kubernetes Secrets. For local testing, .env files are used carefully with .gitignore.
+
+8. How do you version Docker images in your CI/CD process?
+I tag images with Git commit SHAs or semantic versioning (v1.0.0, latest). Jenkins pipelines automate this using environment variables and docker tag. Each tagged image is pushed to ECR or DockerHub.
+
+9. How do you clean up unused Docker resources?
+I regularly use commands like docker system prune, docker image prune, and docker volume rm to clean up dangling containers, images, and volumes, especially in CI environments where space is limited.
+
+10. What is Docker Compose and how have you used it?
+Docker Compose allows defining multi-container applications using docker-compose.yml. I’ve used it to set up local environments with databases, caches, and backend services. It simplifies development and testing by spinning up dependent services quickly.
+
+11. How do you troubleshoot a container that is not starting?
+I use docker logs <container-id> to check logs, and docker inspect for detailed metadata. If needed, I start the container with --entrypoint /bin/sh to get a shell and debug the issue inside.
+
+12. How do you handle container networking in Docker?
+I use user-defined bridge networks to allow container-to-container communication by name. For more complex setups, especially in Swarm or Kubernetes, I use overlay networks or Service Discovery mechanisms.
+
+13. What’s the difference between a Docker image and a Docker container?
+A Docker image is a static, read-only template, while a container is a running instance of that image. You can create multiple containers from a single image.
+
+14. How do you use Docker in a CI/CD pipeline?
+The CI pipeline builds the Docker image using a Dockerfile, tags it with the commit hash, and pushes it to ECR. The CD pipeline deploys the image using kubectl, Helm, or ECS APIs.
+
+15. What is the difference between COPY and ADD in Dockerfile?
+COPY is a straightforward command to copy files. ADD supports features like auto-extracting compressed files and fetching URLs, but is less predictable. I use COPY unless I need ADD’s extra functionality.
+
+16. How do you share data between Docker containers?
+I use volumes to share persistent data and bind mounts during development. For inter-container communication, I connect containers to the same Docker network and expose required ports.
+
+17. Have you used multi-stage Docker builds? Why?
+Yes, multi-stage builds help reduce final image size by separating the build process from the runtime image. I use a builder stage to compile apps and only copy necessary binaries to the final stage, keeping the runtime lean.
+
+18. How do you handle log management in Docker?
+I use the json-file log driver for local logs, and in production, logs are shipped to centralized systems like ELK or CloudWatch using log drivers like awslogs or sidecar containers with Fluentd.
+
+19. How do you handle container restarts and failures?
+I use Docker's restart policies like on-failure or always. In orchestrated environments like Kubernetes or ECS, health checks and readiness probes handle restarts automatically.
+
+20. What is the role of Docker Volume?
+Volumes persist data beyond the lifecycle of a container. I use them for databases or services where state is essential. They are also useful for sharing configuration files between the host and the container.
+
+21. What are Docker Labels?
+Labels are metadata in key-value format used for organizing, filtering, and automation. I use labels for tracking builds, environments, or ownership within Docker images and containers.
+
+22. How do you secure Docker images?
+I scan Docker images using tools like Trivy or Clair to detect vulnerabilities. I also use minimal base images and ensure packages are up to date. In pipelines, image scanning is part of the quality gate.
+
+23. Have you worked with Docker Swarm?
+Yes, for a few projects, I used Docker Swarm to manage container orchestration before migrating to Kubernetes. I configured services, scaling, rolling updates, and secrets in Swarm stacks using docker stack deploy.
+
+24. How do you deal with large Docker images?
+I reduce image size by using multi-stage builds, minimal base images, removing cache or build dependencies in the final image, and running image pruning jobs in CI/CD to remove unused layers.
+
+25. What is the lifecycle of a Docker container?
+The container lifecycle goes from Create → Start → Running → Stopped → Removed. I manage lifecycle via pipelines and monitoring tools, ensuring containers are correctly cleaned up after use.
+
+26. Can you explain Docker image layers?
+Each instruction in a Dockerfile creates a new layer. These layers are cached to speed up builds and shared across containers. Understanding layers helps in optimizing builds and avoiding cache busting.
+
+27. How do you patch a Docker container for a vulnerability?
+I rebuild the Docker image with updated base images or dependencies, scan the new image for vulnerabilities, and redeploy it using CI/CD. Keeping base images minimal and regularly patched is crucial.
+
+28. How do you monitor Docker containers in production?
+I use Prometheus node exporters or cAdvisor to collect container metrics. Logs are streamed to ELK or CloudWatch. In Kubernetes, I use Prometheus-Grafana stack for detailed monitoring.
+
+29. What are init containers in Docker/Kubernetes?
+Though not specific to Docker alone, init containers run before the main container starts. I use them for initializing configuration, setting permissions, or downloading dependencies.
+
+30. How do you prevent Docker container sprawl?
+I regularly prune unused images, containers, volumes, and networks. In CI/CD pipelines, I enforce lifecycle policies and cleanup jobs to prevent resource overuse and cost leaks.
+
