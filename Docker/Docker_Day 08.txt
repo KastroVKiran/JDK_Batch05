@@ -1,0 +1,137 @@
+												Online LIVE Training on 
+										JENKINS 👨‍💼 + DOCKER 🐳 + KUBERNETES ☸️
+														by
+												KASTRO KIRAN V
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Agenda of the Session - DOCKER
+*****************************************
+1️⃣ Replicated Service vs Global Service
+2️⃣ DevSecOps Tools
+3️⃣ Docker Projects - Overview
+4️⃣ Interview Questions
+
+-----------------------------------------------------------
+1️⃣ Replicated Service vs Global Service
+-----------------------------------------------------------
+These two concepts are related to Docker Swarm
+
+A replicated service allows you to define how many copies (replicas) of container should run across the swarm cluster
+Docker swarm then spreads these replicas across the available nodes - not necessarily one per each node
+Even if a node fails or it is removed, the service adjusts to maintain the desired number of replicas on the nodes
+This is best for scaling applications horizontally
+
+A global service ensures exactly one container to run on each node in the swarm
+It doesn't use a "replica count" - it just runs one container per node
+When a new node joins the swarm, Docker automatically starts the service on new node
+If a node is removed, the service count reduces accordingly
+This is ideal for system-level tasks that need to run on each node - for example log collection, monitoring of agents
+
+✅ Step-by-Step Guide: Docker Swarm + Replicated vs Global Services
+🖥️ Setup
+1 Manager Node (e.g., manager-node)
+2 Worker Nodes (e.g., worker-node1, worker-node2)
+
+🔹 STEP 1: Initialize Docker Swarm on the Manager Node
+🔹 STEP 2: Join Worker Nodes to the Swarm
+			After this, run the following on the manager to verify:
+				- docker node ls
+				✅ You should see all 3 nodes listed (1 manager, 2 workers).
+🔹 STEP 3: Deploy a Replicated Service
+	Run this on the manager node:
+	docker service create --name my-web --replicas 5 -p 8080:80 nginx
+	✅ What this does:
+	Creates a service called my-web.
+	Runs 5 replicas of nginx spread across nodes.
+	Exposes port 8080 of the cluster to serve NGINX.
+
+	🔍 Check the status:
+	docker service ls
+	docker service ps my-web
+	🧠 Note: The replicas will be distributed (e.g., 3 on one worker, 2 on another).
+
+🔹 STEP 4: Deploy a Global Service
+	Run this on the manager node:
+	docker service create --name log-agent --mode global alpine sh -c "while true; do echo logging; sleep 60; done"
+	✅ What this does:
+	Creates a log-agent global service using Alpine Linux.
+	Runs 1 container on each node, including the manager.
+	The container just prints “logging” every 60 seconds to simulate a log agent.
+	🔍 Check the service:
+	docker service ps log-agent
+	✅ You’ll see 1 task per node — exactly 3 tasks for 3 nodes.
+
+🔹 STEP 5: Simulate Node Failure 
+	To test behavior:
+	Stop Docker on one worker node:
+	sudo systemctl stop docker
+	On the manager node, re-check services:
+	docker service ps my-web
+	docker service ps log-agent
+	🎯 Result:
+	Replicated service: Still tries to maintain 5 total replicas.
+	Global service: Only 2 replicas now (since one node is down).
+
+🔹 STEP 6: Clean Up
+	docker service rm my-web
+	docker service rm log-agent
+	To leave the swarm (on worker nodes):
+	docker swarm leave
+
+	On the manager (optional if resetting):
+	docker swarm leave --force
+
+✅ Summary Table
+Feature			Replicated Service				Global Service
+Create command	docker service create --replicas N	docker service create --mode global
+Task placement	Docker distributes replicas		One task per node
+Scaling			Manual using --replicas or scale	Auto-scales with node join/leave
+Example use case	Web apps						Monitoring/log collection agents
+
+-----------------------------------------------------------
+2️⃣ DevSecOps Tools
+-----------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Stage						Tool Examples						Key Role
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Code Scanning (SAST)			SonarQube, Checkmarx				Static code vulnerability scanning
+Dependency Scanning			Snyk, OWASP Dependency Check		Detect issues in 3rd-party libraries
+Container Security				Trivy, Grype, Aqua					Image vulnerability scanning
+IaC Scanning					Checkov, TFSec					Find misconfigurations in Terraform/K8s
+DAST						ZAP, Burp Suite					Simulate external attacks on running apps
+Secrets Detection				Gitleaks, TruffleHog					Find hardcoded secrets in code or history
+Policy Enforcement				OPA, Conftest						Ensure security compliance and rules
+Runtime Monitoring			Falco, Sysdig						Detect live threats in containers
+Pipeline Security				Jenkins Plugins, GitLab Ultimate		Secure CI/CD process
+SBOM & Vulnerability Mgt		Syft, CycloneDX, DependencyTrack		Manage software supply chain risks
+
+-----------------------------------------------------------
+3️⃣ Docker Projects - Overview
+-----------------------------------------------------------
+1. Deploying Micro Services Ecommerce App - Docker Compose (Frontend HTML App)
+	https://github.com/KastroVKiran/Kastro-Ecom-DC.git
+
+2. Deploying Micro Services Book Management App - Docker Compose (Node App) - 3 Tier App
+	https://github.com/KastroVKiran/DC-Project-BookApp.git
+
+3. Docker-Compose Project - NGINX Load Balancer Concept for Docker - Python App (With Custom App)
+
+4. Docker-Compose Project - NGINX Load Balancer Concept for Docker - Python App (With Public Docker Image) ---- Self Practice
+
+5. Deploying Spring Boot Java App (Multi Stage Dockerfile)
+	https://github.com/KastroVKiran/SpringBootJavaApp-Docker.git
+
+6. Deploying Micro Services App - Docker Swarm
+	https://github.com/KastroVKiran/Kastro-Ecom-DC.git
+
+7*. Deploying Mock Exam Application - Docker Compose (Python App) - 3 Tier App ---- Self Practice (Jenkins + Docker + Docker Compose)
+	https://github.com/KastroVKiran/devops-exam-app.git
+
+8*. Deployment of SWIGGY App ---- Self Practice (Terraform + Jenkins + Docker + Docker Compose + SonarQube + Trivy + OWASP)
+	https://youtu.be/x55z7rk0NAU 
+
+-----------------------------------------------------------
+4️⃣ Interview Questions
+-----------------------------------------------------------
+
+
