@@ -1,0 +1,114 @@
+												Online LIVE Training on 
+										JENKINS 👨‍💼 + DOCKER 🐳 + KUBERNETES ☸️
+														by
+												KASTRO KIRAN V
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Agenda of the Session - Kubernetes
+*****************************************
+1️⃣ Introduction to Kubernetes
+2️⃣ Why we need Kubernetes?
+3️⃣ Docker Swarm Vs Kubernetes
+4️⃣ What is a Cluster? Components of a Cluster 
+5️⃣ Kubernetes Architecture
+6️⃣ Kubernetes Deployment Process
+7️⃣ Kubernetes Cluster Types - Setup
+8️⃣ Creation of Minikube Cluster
+9️⃣ Kubernetes Resources
+🔟 Creation of Kubernetes Resources
+1️⃣1️⃣YML File Introduction - Structure
+
+-----------------------------------------------------------
+1️⃣ Introduction to Kubernetes
+-----------------------------------------------------------
+Kubernetes - K8S/K8s
+It is an Open-source container orchestration platform that automates;
+	deployments
+	scaling
+	load balancing
+	manage containerized applications
+
+Originally developed by Google (2014)
+Now it is maintained by CNCF - Cloud Native Computing Foundation (2015)
+Kubernetes is originated from Greek word, which means pilot/helmsman
+K8s is developed by using GO programming language
+K8s is an orchestration platform
+It is used to manage the containers
+The first version of K8s was released in 2015 (V1.0)
+For all production related deployments, k8s is highly recommended
+K8s is a replacement for Docker Swarm but not for Docker
+K8s works with the help of Docker. Using K8s we will manage the containers
+
+Types of Orchestration platforms;
+	1. Docker Swarm
+	2. K8s
+
+-----------------------------------------------------------
+3️⃣ Docker Swarm Vs Kubernetes
+-----------------------------------------------------------
+Event Management Company ---- Marriage Function, Olympics
+
+
+-----------------------------------------------------------
+4️⃣ What is a Cluster? Components of a Cluster 
+-----------------------------------------------------------
+Cluster is nothing but group of servers
+A cluster can contain physical servers or virtual machines
+
+Any cluster consists of two main components;
+	1. Control Plane / Master Node
+	2. Worker Node(s)
+
+-----------------------------------------------------------
+6️⃣ Kubernetes Deployment Process
+-----------------------------------------------------------
+
+Pod is the smallest building block that we can run in the K8s cluster
+Pod contains the Container
+
+Docker Swarm Contains Cluster ----> Cluster Contains Nodes ----> Nodes Contains Containers ----> Containers Contains App
+
+K8s Contains Cluster ----> Cluster Contains Nodes ----> Nodes Contains PODS ----> PODS contain Containers ----> Containers Contain Apps
+
+-----------------------------------------------------------
+7️⃣ Kubernetes Cluster Types - Setup 
+-----------------------------------------------------------
+K8s cluster setup can be divided into 2 ways;
+	1. Self managed k8s cluster
+		(a) Kubeadm (Multi-node cluster) - rarely used - manual maintenance 
+		(b) Minikube (Single-node cluster) - for beginners
+		(c) Kops (Multi-node cluster) - automation
+	2. Managed K8s cluster
+		(a) AWS - EKS
+		(b) Azure - AKS
+		(c) GCP - GKE
+		(d) IBM - IKE
+
+Setup Minikube
+Setup Kops
+Setup EKS	--- Billable (3000-4000 Rs) - Hourly Bill gets generated
+
+
+Creation of Minikube (Single Node Cluster)
+---------------------------------------------------
+=> Launch Ubuntu 24.04, t2.medium, 30 GB
+=> Connect to VM
+=> Lets install minikube, kubectl
+
+sudo -s ----> sudo apt update -y ----> hostnamectl set-hostname minikube ----> sudo -i ----> 
+vi minikube.sh ----> 
+sudo apt update -y
+sudo apt upgrade -y
+sudo apt install curl wget apt-transport-https -y
+sudo curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo mv minikube-linux-amd64 /usr/local/bin/minikube
+sudo chmod +x /usr/local/bin/minikube
+sudo minikube version
+sudo curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+sudo echo "$(cat kubectl.sha256) kubectl" | sha256sum --check
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+sudo minikube start --driver=docker --force
+
+----> esc ----> :wq ----> sh minkube.sh ----> minikube status ----> You can see only ONE node. Both master and worker are there in single node. ----> kubectl get nodes ----> kubectl get namespace ----> kubectl get pods ----> kubectl get all
